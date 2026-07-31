@@ -1,6 +1,6 @@
-import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
+import { DatabaseSync, type StatementSync } from "node:sqlite";
 
 const DATA_DIR = process.env.DATA_DIR
   ? path.resolve(process.env.DATA_DIR)
@@ -13,13 +13,13 @@ for (const dir of [DATA_DIR, UPLOAD_DIR, THUMB_DIR]) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
-const globalForDb = globalThis as unknown as { __db?: Database.Database };
+const globalForDb = globalThis as unknown as { __db?: DatabaseSync };
 
-function init(): Database.Database {
-  const db = new Database(path.join(DATA_DIR, "app.db"));
-  db.pragma("journal_mode = WAL");
-  db.pragma("busy_timeout = 5000");
-  db.pragma("foreign_keys = ON");
+function init(): DatabaseSync {
+  const db = new DatabaseSync(path.join(DATA_DIR, "app.db"));
+  db.exec("PRAGMA journal_mode = WAL");
+  db.exec("PRAGMA busy_timeout = 5000");
+  db.exec("PRAGMA foreign_keys = ON");
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS photographers (
@@ -83,17 +83,49 @@ function init(): Database.Database {
   return db;
 }
 
-function connection(): Database.Database {
+function connection(): DatabaseSync {
   if (!globalForDb.__db) globalForDb.__db = init();
   return globalForDb.__db;
 }
 
+type AnyFn = (...args: unknown[]) => unknown;
+
+// node:sqlite hands back rows with a null prototype, which React refuses to
+// serialize when a server component passes one to a client component. Copying
+// each row into a plain object here spares every call site from remembering.
+const toPlainRow = (row: unknown) =>
+  row == null ? row : { ...(row as Record<string, unknown>) };
+
+function wrapStatement(statement: StatementSync): StatementSync {
+  return new Proxy(statement, {
+    get(target, property) {
+      const value = Reflect.get(target, property, target) as unknown;
+      if (typeof value !== "function") return value;
+      const method = (value as AnyFn).bind(target);
+
+      if (property === "get") {
+        return (...args: unknown[]) => toPlainRow(method(...args));
+      }
+      if (property === "all") {
+        return (...args: unknown[]) => (method(...args) as unknown[]).map(toPlainRow);
+      }
+      return method;
+    },
+  });
+}
+
 // Opening SQLite at import time makes every build worker contend for the same
 // file lock, so the handle is created on first query instead.
-export const db = new Proxy({} as Database.Database, {
+export const db = new Proxy({} as DatabaseSync, {
   get(_target, property) {
     const real = connection();
-    const value = Reflect.get(real, property, real);
-    return typeof value === "function" ? value.bind(real) : value;
+    const value = Reflect.get(real, property, real) as unknown;
+    if (typeof value !== "function") return value;
+    const method = (value as AnyFn).bind(real);
+
+    if (property === "prepare") {
+      return (...args: unknown[]) => wrapStatement(method(...args) as StatementSync);
+    }
+    return method;
   },
 });

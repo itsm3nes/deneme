@@ -12,6 +12,9 @@ Arayüz Türkçe ve İngilizce; her sayfa hem telefon hem bilgisayar için tasar
 
 ## Kurulum
 
+**Node.js 22.13 veya üzeri** gerekir — veritabanı Node'un yerleşik `node:sqlite` modülünü
+kullanır, bu yüzden C++ derleyicisi ya da Visual Studio Build Tools kurmanıza gerek yoktur.
+
 ```bash
 npm install
 cp .env.example .env.local          # AUTH_SECRET değerini doldurun
@@ -63,7 +66,7 @@ Ayrıca seçilen karelerin web boyutlu JPEG'leri tek ZIP olarak indirilebilir.
 
 - **Next.js 16** (App Router) + React 19 + TypeScript
 - **Tailwind CSS v4**
-- **SQLite** (`better-sqlite3`) — şema ilk sorguda kurulur
+- **SQLite** (Node yerleşik `node:sqlite`) — şema ilk sorguda kurulur, harici bağımlılık yok
 - **sharp** — yüklenen her kare 2560px JPEG önizleme ve 720px WebP küçük resme dönüştürülür
 - Oturumlar `jose` ile imzalanmış HTTP-only çerezlerde; parolalar `bcryptjs` ile saklanır
 - Müşteri erişimi galeri başına HMAC imzalı çerezle verilir — müşterinin hesap açmasına gerek yok
