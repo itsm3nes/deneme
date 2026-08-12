@@ -28,6 +28,42 @@ npm run dev          # http://localhost:3000
 npm run build && npm start
 ```
 
+## Önizlemeyi yayınlama (Vercel)
+
+Kod tarafında hazır — ek ayar gerekmiyor.
+
+1. [vercel.com](https://vercel.com) → **Continue with GitHub** ile giriş yapın.
+2. **Add New… → Project** → `itsm3nes/deneme` deposunu **Import** edin.
+   Framework olarak Next.js kendiliğinden algılanır; build ayarlarına dokunmayın.
+3. **Deploy**.
+4. **Önemli:** Deponun varsayılan dalı hâlâ eski proje
+   (`claude/photographer-client-sharing-platform-407iwd`). Vercel üretim dalını
+   buradan aldığı için, dağıtım sonrası
+   **Project Settings → Git → Production Branch** değerini
+   `claude/yalova-meva-dental-website-uapcgn` yapıp **Redeploy** edin.
+   (Alternatif: GitHub'da deponun varsayılan dalını değiştirin.)
+
+Bundan sonra bu dala her push'ta site kendiliğinden yeniden yayınlanır.
+
+### Yayına geçerken
+
+Site, `NEXT_PUBLIC_SITE_URL` tanımlanana kadar **taslak** kabul edilir:
+`robots.txt` tüm taramayı kapatır ve sayfalar `noindex` işaretlenir — yer tutucu
+hekim kartları ve örnek yorumlar arama sonuçlarına düşmesin diye.
+
+Gerçek alan adına geçtiğinizde Vercel'de şu değişkeni tanımlayın:
+
+```
+NEXT_PUBLIC_SITE_URL = https://www.mevadis.com.tr
+```
+
+Bu değişken ayrıca canonical, Open Graph ve sitemap adreslerini de düzeltir.
+
+> ⚠️ Vercel'de dosya sistemi salt okunurdur; randevu talepleri geçici klasöre
+> yazılır ve **kalıcı değildir** (yalnızca Vercel günlüklerinde görünür).
+> Siteyi gerçekten hastalara açmadan önce formu e-posta/SMS'e bağlayın —
+> bkz. `src/app/randevu/actions.ts`.
+
 ## Sayfalar
 
 | Yol | İçerik |

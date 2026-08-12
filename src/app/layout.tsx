@@ -3,7 +3,7 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFab } from "@/components/site/ui";
-import { clinic } from "@/lib/clinic";
+import { clinic, isDraftDeployment } from "@/lib/clinic";
 import "./globals.css";
 
 const inter = Inter({
@@ -52,7 +52,10 @@ export const metadata: Metadata = {
       "Yalova'da ağız ve diş sağlığı hizmetleri. Randevu: 0226 813 33 77",
   },
   alternates: { canonical: "/" },
-  robots: { index: true, follow: true },
+  // Taslak dağıtımlarda dizine eklenmeyi kapat (bkz. isDraftDeployment).
+  robots: isDraftDeployment
+    ? { index: false, follow: false }
+    : { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

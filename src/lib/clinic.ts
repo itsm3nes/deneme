@@ -78,6 +78,12 @@ export const clinic = {
       : "https://www.mevadis.com.tr"),
 } as const;
 
+/**
+ * Gerçek alan adı (NEXT_PUBLIC_SITE_URL) tanımlanmadığı sürece site taslak
+ * sayılır: arama motorlarına kapatılır. Yayına alırken bu değişkeni ayarlayın.
+ */
+export const isDraftDeployment = !process.env.NEXT_PUBLIC_SITE_URL;
+
 export type NavItem = {
   href: string;
   label: string;
