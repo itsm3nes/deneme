@@ -34,7 +34,9 @@ export function AppointmentForm({
         <span className="flex size-14 items-center justify-center rounded-full bg-aqua-500 text-white">
           <Icon name="check" className="size-7" />
         </span>
-        <h3 className="text-xl font-extrabold">Talebiniz alındı</h3>
+        <h3 className="text-xl font-extrabold">
+          {state.title ?? "Talebiniz alındı"}
+        </h3>
         <p className="max-w-sm text-sm leading-relaxed text-ink-600">
           {state.message}
         </p>

@@ -15,3 +15,6 @@ export default function robots(): MetadataRoute.Robots {
     host: base,
   };
 }
+
+/** Statik export sırasında da üretilebilmesi için. */
+export const dynamic = "force-static";

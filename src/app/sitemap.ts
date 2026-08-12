@@ -41,3 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 }
+
+/** Statik export sırasında da üretilebilmesi için. */
+export const dynamic = "force-static";

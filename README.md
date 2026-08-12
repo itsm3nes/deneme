@@ -64,7 +64,32 @@ Bu değişken ayrıca canonical, Open Graph ve sitemap adreslerini de düzeltir.
 > Siteyi gerçekten hastalara açmadan önce formu e-posta/SMS'e bağlayın —
 > bkz. `src/app/randevu/actions.ts`.
 
-## Sayfalar
+## Statik HTML (kendi bilgisayarınızdan / paylaşımlı hostingten)
+
+Siteyi sunucu gerektirmeyen saf HTML/CSS/JS'e çevirebilirsiniz:
+
+```bash
+npm install
+npm run build:static     # çıktı: out/
+npm run preview:static   # http://localhost:3000
+```
+
+`out/` klasörünün **içindekileri** herhangi bir yere koyabilirsiniz —
+paylaşımlı hostingte `public_html`, GitHub Pages, Netlify, bir USB bellek…
+Veritabanı ya da Node.js gerekmez.
+
+**Bilinmesi gerekenler:**
+
+- `index.html` dosyasına çift tıklayıp `file://` ile açmak **çalışmaz** —
+  sayfalar `/_next/...` gibi mutlak yollar kullanır. Basit bir yerel sunucu
+  gerekir; `npm run preview:static` tam olarak bunu yapar.
+- Statik sürümde sunucu olmadığı için **randevu formu** sunucuya kayıt yazamaz.
+  Bunun yerine form aynı doğrulamalardan geçer ve bilgileri hazır bir mesaj
+  hâline getirip **WhatsApp'ta açar** (`src/lib/appointment-static.ts`).
+  Sunuculu sürümde (Vercel, kendi Node sunucunuz) form normal çalışmayı sürdürür.
+- Alt sayfa adresleri klasör biçimindedir: `/tedaviler/implant/`.
+
+## Önizlemeyi yayınlama (Vercel)
 
 | Yol | İçerik |
 | --- | --- |
@@ -162,7 +187,7 @@ görselleri için hastadan yazılı aydınlatılmış onam gerekir. Site metinle
 
 ## Teknik
 
-- **Next.js 16** (App Router, Turbopack) + React 19 + TypeScript
+- **Next.js 16** (App Router, Turbopack) + React 19 + TypeScript — hem sunuculu hem statik export ile çalışır (`next.config.ts`)
 - **Tailwind CSS v4** — tasarım değişkenleri `src/app/globals.css` içindeki `@theme` bloğunda
 - Fontlar `next/font` ile kendi sunucumuzdan servis edilir (Inter + Plus Jakarta Sans)
 - İkonlar el yazımı inline SVG (`src/components/site/Icons.tsx`) — harici ikon paketi yok

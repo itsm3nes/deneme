@@ -9,6 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:static": "node scripts/build-static.mjs",
+    "preview:static": "npx --yes serve out -l 3000",
     "lint": "eslint"
   },
   "dependencies": {
