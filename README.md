@@ -111,14 +111,59 @@ mobil menü, WhatsApp butonu.
 
 ## İçerik nerede düzenlenir?
 
-Sitedeki metinlerin tamamı üç dosyada toplandı — sayfalara dokunmadan
-güncelleyebilirsiniz:
+Sitedeki metinlerin tamamı `content/` klasöründeki JSON dosyalarındadır ve
+**yönetim panelinden** düzenlenir — koda dokunmanız gerekmez.
 
 | Dosya | İçerik |
 | --- | --- |
-| `src/lib/clinic.ts` | Adres, telefon, WhatsApp, e-posta, çalışma saatleri, sosyal medya, menü |
-| `src/lib/treatments.ts` | 16 tedavi: açıklama, adımlar, özet bilgiler, S.S.S. |
-| `src/lib/content.ts` | Hekimler, S.S.S., hasta yorumları, blog yazıları, anlaşmalı kurumlar |
+| `content/clinic.json` | Adres, telefon, WhatsApp, e-posta, çalışma saatleri, sosyal medya |
+| `content/treatments.json` | 16 tedavi: açıklama, adımlar, özet bilgiler, S.S.S. |
+| `content/doctors.json` | Hekim kartları |
+| `content/faqs.json` | Sık sorulan sorular |
+| `content/testimonials.json` | Hasta yorumları |
+| `content/posts.json` | Blog yazıları |
+| `content/partners.json` | Anlaşmalı kurumlar |
+
+## Yönetim paneli (`/yonetim`)
+
+Adres, çalışma saatleri, hekimler, tedaviler, S.S.S., yorumlar ve blog yazıları
+tarayıcıdan düzenlenebilir.
+
+### Açma
+
+Panel, parola tanımlanmadan **kapalıdır**. Sunucuda şu değişkeni tanımlayın:
+
+```
+ADMIN_PASSWORD=uzun-ve-tahmin-edilemez-bir-parola
+```
+
+Kendi bilgisayarınızda: proje kökünde `.env.local` dosyası oluşturup yazın,
+`npm run dev` ile açın ve <http://localhost:3000/yonetim> adresine gidin.
+Vercel'de: Project Settings → Environment Variables.
+
+### Değişiklikler nereye yazılır?
+
+| Ortam | Davranış |
+| --- | --- |
+| Kendi bilgisayarınız / kendi Node sunucunuz | `content/*.json` dosyalarına doğrudan yazılır |
+| Vercel (dosya sistemi salt okunur) | GitHub deposuna işlenir → site kendiliğinden yeniden yayınlanır |
+
+Vercel için üç değişken daha gerekir (bkz. `.env.example`): `GITHUB_TOKEN`
+(fine-grained, yalnızca bu depoda *Contents: Read and write*), `GITHUB_REPO` ve
+`GITHUB_BRANCH`. Tanımlanmazsa panel açılır ama kayıt sırasında hata verir.
+
+> İçerik build sırasında sayfalara gömülür. Bu yüzden bir değişikliğin canlıda
+> görünmesi için sitenin yeniden yayınlanması gerekir — GitHub kipinde bu
+> otomatiktir (1–2 dakika), yerel kipte `npm run build` ile.
+
+### Panelin kapsamadıkları
+
+- **Fotoğraf yükleme** — görseller `public/galeri/` klasörüne dosya olarak eklenir.
+- **Tasarım ve bölüm sıralaması** — kod tarafındadır.
+- **Randevu talepleri** — panelde listelenmez; formu e-postaya bağlamanız önerilir.
+
+Panel `robots.txt` ile taramaya kapalıdır, `noindex` işaretlidir ve statik HTML
+sürümüne hiç dâhil edilmez.
 
 ## Doğrulanması gerekenler
 

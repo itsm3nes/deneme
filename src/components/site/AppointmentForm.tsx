@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { createAppointmentRequest } from "@/app/randevu/actions";
+import { createAppointmentRequest } from "@/app/(site)/randevu/actions";
 import { initialAppointmentState } from "@/lib/appointment";
 import { treatments } from "@/lib/treatments";
 import { Icon } from "./Icons";

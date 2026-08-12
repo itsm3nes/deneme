@@ -1,11 +1,16 @@
 import Link from "next/link";
+import { Footer } from "@/components/site/Footer";
+import { Header } from "@/components/site/Header";
 import { Icon } from "@/components/site/Icons";
 import { LogoMark } from "@/components/site/Logo";
 import { clinic } from "@/lib/clinic";
 
+/** Kök seviyede olduğu için site başlığını/alt bilgisini kendisi ekler. */
 export default function NotFound() {
   return (
-    <section className="bg-mesh">
+    <div className="flex min-h-dvh flex-col">
+      <Header />
+      <section className="bg-mesh flex-1">
       <div className="container-x flex flex-col items-center py-24 text-center sm:py-32">
         <LogoMark className="h-16 w-auto text-aqua-300" />
         <p className="mt-8 font-display text-6xl font-extrabold text-brand-200">
@@ -31,6 +36,8 @@ export default function NotFound() {
           </a>
         </div>
       </div>
-    </section>
+      </section>
+      <Footer />
+    </div>
   );
 }

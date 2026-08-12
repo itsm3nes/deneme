@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
   }
 
   return {
-    rules: { userAgent: "*", allow: "/", disallow: "/kvkk" },
+    rules: { userAgent: "*", allow: "/", disallow: ["/kvkk", "/yonetim"] },
     sitemap: `${base}/sitemap.xml`,
     host: base,
   };

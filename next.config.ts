@@ -19,7 +19,7 @@ const nextConfig: NextConfig = staticExport
       images: { unoptimized: true },
       turbopack: {
         resolveAlias: {
-          "@/app/randevu/actions": "./src/lib/appointment-static.ts",
+          "@/app/(site)/randevu/actions": "./src/lib/appointment-static.ts",
         },
       },
     }
