@@ -1,0 +1,16 @@
+<!--
+  TASLAK LOGO — kliniğin orijinal logosuna benzetilerek yeniden çizilmiştir.
+  Orijinal dosyanız hazır olduğunda bu dosyanın üzerine yazmanız yeterlidir.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 130" width="460" height="130" role="img" aria-label="Meva Ağız ve Diş Sağlığı Polikliniği">
+  <g fill="none" stroke="#2f4179" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M25 72C17 46 20 17 37 17c10 0 14 11 21 11s11-11 21-11c17 0 20 29 12 55"/>
+    <path d="M8 74c6 12 20 19 37 19 16 0 31-6 43-18"/>
+    <g transform="rotate(-40 92 60)">
+      <rect x="76" y="52" width="34" height="16" rx="8" stroke-width="7"/>
+      <path d="M82 52v-7M88 52v-7M94 52v-7M100 52v-7" stroke-width="5"/>
+    </g>
+  </g>
+  <text x="130" y="72" font-family="Plus Jakarta Sans, Segoe UI, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-2" fill="#2f4179">meva</text>
+  <text x="132" y="100" font-family="Plus Jakarta Sans, Segoe UI, Arial, sans-serif" font-size="14.5" font-weight="700" letter-spacing="2.1" fill="#2f4179">AĞIZ VE DİŞ SAĞLIĞI POLİKLİNİĞİ</text>
+</svg>

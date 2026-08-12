@@ -1,30 +1,25 @@
-# Kadraj
+# Meva Ağız ve Diş Sağlığı Polikliniği — web sitesi taslağı
 
-Fotoğrafçılar için müşteri seçim galerisi. Fotoğrafçı çekimi yükler, tek bağlantıyla müşteriye
-gönderir; müşteri telefonundan beğendiği kareleri işaretler ve her karenin altına not bırakır.
-Seçim tamamlandığında fotoğrafçı seçilenleri notlarıyla görür ve Lightroom Classic'e aktarır.
+Yalova Bayraktepe'de hizmet veren **Meva Ağız ve Diş Sağlığı Polikliniği** için
+hazırlanmış tanıtım sitesi taslağı. Klasik bir diş kliniği sitesinde bulunması
+beklenen tüm bölümler kurulu: tedavi sayfaları, hekim kadrosu, galeri,
+öncesi/sonrası karşılaştırma, blog, S.S.S., randevu formu, iletişim ve harita,
+KVKK metni, SEO dosyaları.
 
-Arayüz Türkçe ve İngilizce; her sayfa hem telefon hem bilgisayar için tasarlandı.
+Renk yönü: **açık mavi + beyaz**, logodaki lacivert (`#2f4179`) ana marka rengi
+olarak kullanıldı.
 
-> Client proofing galleries for photographers. Share a shoot with one link, let the client pick
-> favourites and leave a note on any frame from their phone, then push the picks into Lightroom
-> Classic. Turkish and English, mobile and desktop.
+> ⚠️ **Bu bir taslaktır.** Sitedeki bilgilerin bir kısmı internetteki açık
+> kaynaklardan derlendi, bir kısmı ise yer tutucudur. Yayına almadan önce
+> aşağıdaki **"Doğrulanması gerekenler"** listesini tamamlayın.
 
 ## Kurulum
 
-**Node.js 22.13 veya üzeri** gerekir — veritabanı Node'un yerleşik `node:sqlite` modülünü
-kullanır, bu yüzden C++ derleyicisi ya da Visual Studio Build Tools kurmanıza gerek yoktur.
+Node.js 22.13+ gerekir.
 
 ```bash
 npm install
-cp .env.example .env.local          # AUTH_SECRET değerini doldurun
-npm run dev                          # http://localhost:3000
-```
-
-`AUTH_SECRET` üretmek için:
-
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+npm run dev          # http://localhost:3000
 ```
 
 Üretim için:
@@ -33,46 +28,107 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 npm run build && npm start
 ```
 
-## Akış
+## Sayfalar
 
-1. **Kayıt / giriş** — fotoğrafçı hesabı açar.
-2. **Galeri oluştur** — çekim adı, müşteri bilgisi, erişim kodu, en az/en fazla seçim sayısı.
-3. **Fotoğrafları yükle** — sürükle bırak; her kare için önizleme ve küçük resim üretilir.
-4. **Paylaş** — galeriye özel bağlantı ve 6 haneli erişim kodu. Hazır mesaj tek tıkla kopyalanır.
-5. **Müşteri seçer** — bağlantıyı açar, kodu girer, kareleri işaretler, not bırakır, gönderir.
-6. **Seçim kilitlenir** — gönderim sonrası müşteri değişiklik yapamaz. Fotoğrafçı isterse yeniden açar.
-7. **Lightroom'a aktar** — aşağıdaki yöntemlerden biriyle.
+| Yol | İçerik |
+| --- | --- |
+| `/` | Hero, tedavi kartları, neden biz, süreç, hekimler, galeri, yorumlar, S.S.S. + hızlı randevu formu, blog |
+| `/hakkimizda` | Klinik tanıtımı, değerler, sterilizasyon zinciri, anlaşmalı kurumlar |
+| `/tedaviler` | 16 tedavi başlığının listesi |
+| `/tedaviler/[slug]` | Tedavi detayı: süreç adımları, kimler için uygun, özet bilgiler, tedaviye özel S.S.S. (+ FAQ yapılandırılmış verisi) |
+| `/hekimlerimiz` | Hekim kartları (şu an yer tutucu) |
+| `/galeri` | Klinik fotoğrafları + öncesi/sonrası sürgülü karşılaştırma |
+| `/blog`, `/blog/[slug]` | 5 bilgilendirme yazısı |
+| `/sss` | Gruplanmış sık sorulan sorular |
+| `/randevu` | Randevu formu + hazırlık bilgileri |
+| `/iletisim` | İletişim kartları, haftalık çalışma saatleri, form, Google Maps |
+| `/anlasmali-kurumlar` | Kurum protokolleri |
+| `/kvkk` | KVKK aydınlatma metni ve çerez politikası (örnek metin) |
 
-## Lightroom Classic aktarımı
+Ayrıca: `sitemap.xml`, `robots.txt`, `Dentist` şeması (JSON-LD), 404 sayfası,
+mobil menü, WhatsApp butonu.
 
-Fotoğrafçı, seçimler sayfasından yıldız değerini, renk etiketini ve anahtar kelimeyi seçip indirir.
+## İçerik nerede düzenlenir?
 
-**XMP sidecar paketi (ZIP)** — Her seçili kare için bir `.xmp` dosyası; yıldız (`xmp:Rating`),
-renk etiketi (`xmp:Label`), anahtar kelime (`dc:subject` + `lr:hierarchicalSubject`) ve müşteri
-notunu (`dc:description`) taşır. Dosyalar RAW dosyalarınızın **yanına** kopyalanır, sonra
-Lightroom Classic'te fotoğraflar seçilip `Metadata ▸ Read Metadata from Files` çalıştırılır.
+Sitedeki metinlerin tamamı üç dosyada toplandı — sayfalara dokunmadan
+güncelleyebilirsiniz:
 
-Sidecar adları yüklediğiniz dosyanın uzantısız adıyla eşleşir — bu yüzden RAW dosyalarınızın
-JPEG önizlemelerini **aynı dosya adıyla** yükleyin (`IMG_4821.jpg` → `IMG_4821.xmp` → `IMG_4821.CR2`).
+| Dosya | İçerik |
+| --- | --- |
+| `src/lib/clinic.ts` | Adres, telefon, WhatsApp, e-posta, çalışma saatleri, sosyal medya, menü |
+| `src/lib/treatments.ts` | 16 tedavi: açıklama, adımlar, özet bilgiler, S.S.S. |
+| `src/lib/content.ts` | Hekimler, S.S.S., hasta yorumları, blog yazıları, anlaşmalı kurumlar |
 
-**Dosya adı listesi (TXT)** — Seçili dosya adları boşlukla ayrılmış tek satır.
-`Library ▸ Filter Bar ▸ Text` bölümünde alanı `Filename`, kuralı `Contains Any` yapıp yapıştırın.
+## Doğrulanması gerekenler
 
-**CSV** — Dosya adı, müşteri notu ve seçim zamanı. UTF-8 BOM ile, Excel'de Türkçe karakterler bozulmaz.
+Aşağıdaki bilgiler açık kaynaklarda bulunamadı ya da teyit edilemedi. **Hiçbiri
+uydurulmadı**; yer tutucu olarak bırakıldı ve kodda `⚠️ TASLAK` / `verified: false`
+şeklinde işaretlendi.
 
-Ayrıca seçilen karelerin web boyutlu JPEG'leri tek ZIP olarak indirilebilir.
+- [ ] **Hekim kadrosu** — ad, unvan, uzmanlık, özgeçmiş, fotoğraf (`src/lib/content.ts` → `doctors`). Şu an 4 yer tutucu kart var.
+- [ ] **Çalışma saatleri** — şu an hafta içi 09:00–19:00 / Cumartesi 09:00–17:00 varsayıldı (`src/lib/clinic.ts` → `hours`).
+- [ ] **WhatsApp numarası** — sabit hat numarası kullanıldı, gerçek WhatsApp hattı girilmeli (`clinic.whatsapp`).
+- [ ] **Harita konumu** — `clinic.address.geo` içindeki koordinatlar yaklaşıktır; Google Maps kaydından alınmalı.
+- [ ] **Hasta yorumları** — ana sayfadaki yorumlar örnek metindir. Gerçek yorumlarla değiştirin ya da bölümü kaldırın (hastadan yazılı izin gerekir).
+- [ ] **Anlaşmalı kurumlar** — yalnızca basına yansıyan YTSO protokolü listelendi; güncel liste alınmalı.
+- [ ] **Kuruluş yılı, ünit sayısı, klinik büyüklüğü** — hakkımızda metnine eklenmedi.
+- [ ] **KVKK metni** — örnek taslaktır, hukukçu incelemesinden geçmelidir.
+
+### Doğrulanmış bilgiler (kaynak: mevadis.com.tr ve harita kayıtları)
+
+- Adres: Bayraktepe Mah. Şehit Ömer Faydalı Cad. No: 77/A, Merkez / Yalova
+- Telefon: 0226 813 33 77
+- E-posta: mevadisklinikleri@gmail.com
+- Instagram: [@meva.dis](https://www.instagram.com/meva.dis/)
+- Tedavi başlıkları: implant, ortodonti, cerrahi, estetik dolgu, endodonti, protez, gülüş tasarımı, porselen dolgu, pedodonti, oral diagnoz, beyazlatma, laminate veneer, periodontoloji, restoratif tedavi, zirkonyum
+
+## Görseller
+
+Sitede henüz fotoğraf yok; her fotoğrafın yeri kesikli çerçeveli **yer tutucu**
+ile ve önerilen ölçüsüyle gösteriliyor (`PhotoSlot` bileşeni).
+
+Fotoğraflar hazır olduğunda:
+
+1. Dosyaları `public/galeri/` altına koyun.
+2. İlgili `<PhotoSlot … />` satırını `next/image` ile değiştirin:
+
+```tsx
+<Image src="/galeri/bekleme-alani.jpg" alt="Bekleme alanı" width={1200} height={900} className="rounded-xl2" />
+```
+
+Öncesi/sonrası bileşeni (`BeforeAfter`) `before` ve `after` proplarına doğrudan
+`<Image fill />` alabilir; başka değişiklik gerekmez.
+
+### Logo
+
+`src/components/site/Logo.tsx` içindeki işaret, kliniğin logosuna (diş + diş
+fırçası + gülümseme yayı) benzetilerek **yeniden çizilmiş** bir vektördür ve
+`currentColor` kullandığı için her zeminde renk alır. Orijinal logo dosyanız
+hazır olduğunda `public/logo.svg` üzerine yazıp bileşendeki `<svg>` bloğunu
+`next/image` ile değiştirmeniz yeterli. Favicon: `src/app/icon.svg`.
+
+## Randevu formu
+
+Form bir Server Action ile çalışır (`src/app/randevu/actions.ts`): alanlar
+sunucuda doğrulanır, bot tuzağı vardır ve talep
+`DATA_DIR/randevu-talepleri.jsonl` dosyasına yazılır (varsayılan `./storage`).
+
+**Yayına almadan önce** bu kaydı gerçek bir kanala bağlayın — e-posta (Resend,
+SMTP), SMS ya da klinik yazılımınızın API'si. İlgili yer dosyada
+`⚠️ TASLAK` yorumuyla işaretli.
+
+## Mevzuat notu
+
+Sağlık hizmeti tanıtımında fiyat listesi, indirim oranı, tedavi garantisi ve
+"en iyi / tek" türü karşılaştırmalı ifadeler yayımlanamaz; öncesi–sonrası
+görselleri için hastadan yazılı aydınlatılmış onam gerekir. Site metinleri bu
+çerçeveye uygun yazıldı — güncellerken aynı çizgiyi koruyun.
 
 ## Teknik
 
-- **Next.js 16** (App Router) + React 19 + TypeScript
-- **Tailwind CSS v4**
-- **SQLite** (Node yerleşik `node:sqlite`) — şema ilk sorguda kurulur, harici bağımlılık yok
-- **sharp** — yüklenen her kare 2560px JPEG önizleme ve 720px WebP küçük resme dönüştürülür
-- Oturumlar `jose` ile imzalanmış HTTP-only çerezlerde; parolalar `bcryptjs` ile saklanır
-- Müşteri erişimi galeri başına HMAC imzalı çerezle verilir — müşterinin hesap açmasına gerek yok
-
-Dil yönlendirmesi `src/proxy.ts` içinde: yolda dil öneki yoksa `NEXT_LOCALE` çerezine, yoksa
-`Accept-Language` başlığına bakılır, o da yoksa Türkçe'ye düşer.
-
-Veritabanı ve fotoğraflar `DATA_DIR` (varsayılan `./storage`) altında tutulur; bu dizin
-sürüm kontrolüne girmez.
+- **Next.js 16** (App Router, Turbopack) + React 19 + TypeScript
+- **Tailwind CSS v4** — tasarım değişkenleri `src/app/globals.css` içindeki `@theme` bloğunda
+- Fontlar `next/font` ile kendi sunucumuzdan servis edilir (Inter + Plus Jakarta Sans)
+- İkonlar el yazımı inline SVG (`src/components/site/Icons.tsx`) — harici ikon paketi yok
+- Görüş alanına girince beliren bölümler saf CSS (`animation-timeline: view()`); destek yoksa içerik olduğu gibi görünür
+- 37 sayfanın tamamı build sırasında statik üretilir

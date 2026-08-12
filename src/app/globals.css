@@ -1,142 +1,233 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink-950: #0a0a0c;
-  --color-ink-900: #101013;
-  --color-ink-850: #16161a;
-  --color-ink-800: #1c1c21;
-  --color-ink-700: #26262d;
-  --color-ink-600: #35353f;
-  --color-ink-500: #4a4a57;
-  --color-ink-400: #6e6e7e;
-  --color-ink-300: #9a9aa8;
-  --color-ink-200: #c6c6d0;
-  --color-ink-100: #e8e8ee;
-  --color-ink-50: #f6f6f9;
+  /* Logodaki lacivert — ana marka rengi */
+  --color-brand-50: #f2f5fb;
+  --color-brand-100: #e3eaf7;
+  --color-brand-200: #c7d5ee;
+  --color-brand-300: #9db2de;
+  --color-brand-400: #6d8aca;
+  --color-brand-500: #4b68b3;
+  --color-brand-600: #3a5296;
+  --color-brand-700: #2f4179;
+  --color-brand-800: #263560;
+  --color-brand-900: #1b2647;
 
-  --color-gold-400: #e3bd76;
-  --color-gold-500: #d4a24c;
-  --color-gold-600: #b8863a;
+  /* Açık mavi — vurgu rengi */
+  --color-aqua-50: #eef9ff;
+  --color-aqua-100: #d9f1ff;
+  --color-aqua-200: #b5e6ff;
+  --color-aqua-300: #7ad4ff;
+  --color-aqua-400: #34bcf6;
+  --color-aqua-500: #0aa2e4;
+  --color-aqua-600: #0081c1;
+  --color-aqua-700: #01679c;
+
+  /* Metin ve yüzeyler */
+  --color-ink-50: #f7f9fc;
+  --color-ink-100: #eef2f8;
+  --color-ink-200: #dde4ef;
+  --color-ink-300: #bcc7d9;
+  --color-ink-400: #8f9db4;
+  --color-ink-500: #6b7a93;
+  --color-ink-600: #4f5d74;
+  --color-ink-700: #3a4557;
+  --color-ink-800: #262f3d;
+  --color-ink-900: #161c26;
 
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-xl2: 1.125rem;
+  --radius-xl2: 1.25rem;
+  --radius-xl3: 1.75rem;
+
+  --shadow-soft: 0 1px 2px rgb(38 53 96 / 0.04), 0 8px 24px -8px rgb(38 53 96 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(38 53 96 / 0.05), 0 18px 44px -14px rgb(38 53 96 / 0.22);
 }
 
-:root {
-  color-scheme: dark;
-}
+/* Taban stiller `base` katmanında kalmalı; katmansız yazılırsa Tailwind
+   yardımcı sınıflarını (ör. koyu bölümlerdeki `text-white`) ezerler. */
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
 
-html,
-body {
-  background-color: var(--color-ink-950);
-  color: var(--color-ink-100);
-  -webkit-tap-highlight-color: transparent;
-}
+  html,
+  body {
+    background-color: #fff;
+    color: var(--color-ink-700);
+    -webkit-tap-highlight-color: transparent;
+  }
 
-body {
-  font-family: var(--font-sans);
-  overscroll-behavior-y: none;
-}
+  body {
+    font-family: var(--font-sans);
+    overscroll-behavior-y: none;
+  }
 
-* {
-  min-width: 0;
+  * {
+    min-width: 0;
+  }
+
+  ::selection {
+    background: var(--color-aqua-200);
+    color: var(--color-brand-900);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-brand-900);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
 }
 
 @layer components {
-  .btn,
-  .btn-primary,
-  .btn-secondary,
-  .btn-ghost,
-  .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5
-      text-sm font-medium transition-colors select-none
-      disabled:cursor-not-allowed disabled:opacity-50
-      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-500;
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+      text-sm font-semibold transition-all duration-200 select-none
+      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-aqua-500
+      disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-primary {
-    @apply bg-gold-500 text-ink-950 hover:bg-gold-400 active:bg-gold-600;
+    @apply bg-aqua-500 text-white shadow-soft hover:bg-aqua-600 hover:shadow-lift active:bg-aqua-700;
   }
-  .btn-secondary {
-    @apply bg-ink-800 text-ink-100 ring-1 ring-ink-700 ring-inset hover:bg-ink-700;
+  .btn-navy {
+    @apply bg-brand-700 text-white shadow-soft hover:bg-brand-800 hover:shadow-lift;
+  }
+  .btn-outline {
+    @apply bg-white text-brand-700 ring-1 ring-brand-200 ring-inset hover:bg-brand-50 hover:ring-brand-300;
   }
   .btn-ghost {
-    @apply text-ink-300 hover:bg-ink-850 hover:text-ink-100;
+    @apply text-brand-700 hover:bg-brand-50;
   }
-  .btn-danger {
-    @apply bg-red-500/15 text-red-300 ring-1 ring-red-500/30 ring-inset hover:bg-red-500/25;
+  .btn-white {
+    @apply bg-white text-brand-800 shadow-soft hover:bg-aqua-50;
+  }
+  .btn-sm {
+    @apply px-4 py-2 text-[0.8rem];
+  }
+
+  .card {
+    @apply rounded-xl2 bg-white ring-1 ring-ink-200/70 ring-inset shadow-soft;
+  }
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lift hover:ring-aqua-200;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-aqua-50 px-3 py-1
+      text-xs font-semibold text-aqua-700 ring-1 ring-aqua-100 ring-inset;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] text-aqua-600 uppercase;
   }
 
   .field {
-    @apply w-full rounded-xl bg-ink-900 px-4 py-3 text-[16px] text-ink-100
-      ring-1 ring-ink-700 ring-inset outline-none transition
-      placeholder:text-ink-500
-      focus:ring-2 focus:ring-gold-500;
+    @apply w-full rounded-xl border-0 bg-ink-50 px-4 py-3 text-[16px] text-ink-800
+      ring-1 ring-ink-200 ring-inset outline-none transition
+      placeholder:text-ink-400
+      focus:bg-white focus:ring-2 focus:ring-aqua-500;
   }
   .label {
-    @apply mb-1.5 block text-sm font-medium text-ink-200;
+    @apply mb-1.5 block text-sm font-semibold text-brand-800;
   }
   .hint {
-    @apply mt-1.5 text-xs leading-relaxed text-ink-400;
+    @apply mt-1.5 text-xs leading-relaxed text-ink-500;
   }
-  .card {
-    @apply rounded-xl2 bg-ink-900 ring-1 ring-ink-800 ring-inset;
+
+  .section {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .prose-lite {
+    @apply text-[0.975rem] leading-[1.85] text-ink-600;
+  }
+  .prose-lite p + p {
+    @apply mt-4;
   }
 }
 
-@keyframes pop-in {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+@utility text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-brand-700),
+    var(--color-aqua-500)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-.animate-pop-in {
-  animation: pop-in 220ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+
+/* Yumuşak arka plan dokusu */
+@utility bg-mesh {
+  background-image:
+    radial-gradient(60% 55% at 12% 8%, var(--color-aqua-100) 0%, transparent 60%),
+    radial-gradient(50% 50% at 92% 0%, var(--color-brand-100) 0%, transparent 65%),
+    linear-gradient(180deg, var(--color-aqua-50) 0%, #fff 70%);
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(47 65 121 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(47 65 121 / 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
     transform: none;
   }
 }
+
 .animate-fade-up {
-  animation: fade-up 260ms ease-out both;
+  animation: fade-up 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Görüş alanına girince beliren bloklar. Destek yoksa içerik olduğu gibi görünür. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 42%;
+    }
+  }
+}
+
+/* Yazdırmada kaydırma tabanlı animasyon çalışmaz; içerik gizli kalmasın. */
+@media print {
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-ink-950);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-ink-700);
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink-600);
 }
