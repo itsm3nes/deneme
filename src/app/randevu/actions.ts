@@ -1,29 +1,24 @@
 "use server";
 
 import { appendFile, mkdir } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
+import type { AppointmentField, AppointmentState } from "@/lib/appointment";
 import { treatments } from "@/lib/treatments";
 
-export type AppointmentState = {
-  status: "idle" | "success" | "error";
-  message?: string;
-  errors?: Partial<Record<AppointmentField, string>>;
-  values?: Partial<Record<AppointmentField, string>>;
-};
-
-type AppointmentField =
-  | "adSoyad"
-  | "telefon"
-  | "eposta"
-  | "tedavi"
-  | "tarih"
-  | "saat"
-  | "mesaj"
-  | "kvkk";
-
-export const initialAppointmentState: AppointmentState = { status: "idle" };
-
-const DATA_DIR = process.env.DATA_DIR ?? path.join(process.cwd(), "storage");
+/**
+ * Vercel gibi sunucusuz ortamlarda proje klasörü salt okunurdur; yalnızca
+ * geçici klasöre yazılabilir. Bu yüzden orada /tmp kullanılır — kalıcı değildir,
+ * bu nedenle her talep ayrıca sunucu günlüğüne de yazılır.
+ */
+const isServerless = Boolean(
+  process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME,
+);
+const DATA_DIR =
+  process.env.DATA_DIR ??
+  (isServerless
+    ? path.join(os.tmpdir(), "meva")
+    : path.join(process.cwd(), "storage"));
 const REQUEST_FILE = path.join(DATA_DIR, "randevu-talepleri.jsonl");
 
 /** Türkiye cep/sabit hat: 10 hane (başındaki 0 ve +90 ayıklanır). */
@@ -108,10 +103,13 @@ export async function createAppointmentRequest(
   };
 
   /**
-   * ⚠️ TASLAK: Talepler şimdilik sunucudaki bir dosyaya yazılıyor.
-   * Yayına alırken burayı e-posta (ör. Resend/SMTP), SMS ya da klinik
-   * yazılımınızın API'siyle değiştirin.
+   * ⚠️ TASLAK: Talepler şimdilik sunucudaki bir dosyaya yazılıyor ve günlüğe
+   * düşürülüyor. Yayına alırken burayı e-posta (ör. Resend/SMTP), SMS ya da
+   * klinik yazılımınızın API'siyle değiştirin — aksi hâlde sunucusuz
+   * ortamlarda talepler kalıcı olarak saklanmaz.
    */
+  console.info("[randevu talebi]", JSON.stringify(record));
+
   try {
     await mkdir(DATA_DIR, { recursive: true });
     await appendFile(REQUEST_FILE, `${JSON.stringify(record)}\n`, "utf8");

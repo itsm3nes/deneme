@@ -67,8 +67,15 @@ export const clinic = {
     website: "https://www.mevadis.com.tr",
   },
 
-  /** Sitenin canlı adresi. Yayına alırken NEXT_PUBLIC_SITE_URL ile ezilebilir. */
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mevadis.com.tr",
+  /**
+   * Sitenin canlı adresi; canonical, Open Graph, sitemap ve robots buradan üretilir.
+   * Öncelik: NEXT_PUBLIC_SITE_URL → Vercel önizleme adresi → gerçek alan adı.
+   */
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "https://www.mevadis.com.tr"),
 } as const;
 
 export type NavItem = {
