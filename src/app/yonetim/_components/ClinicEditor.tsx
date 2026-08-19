@@ -148,12 +148,18 @@ export function ClinicEditor({ initial }: { initial: Clinic }) {
               onChange={(v) => set("whatsapp.number", v.replace(/\D/g, ""))}
               hint="Ülke koduyla, boşluksuz. Örn. 905321234567"
             />
-            <Text
-              label="WhatsApp görünen ad"
-              value={data.whatsapp.display}
-              onChange={(v) => set("whatsapp.display", v)}
-            />
           </div>
+          {data.whatsapp.number ? (
+            <a
+              href={`https://wa.me/${data.whatsapp.number}`}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-aqua-700 hover:underline"
+            >
+              Bu numarayı WhatsApp&apos;ta sına →
+            </a>
+          ) : null}
+
           <label className="mt-4 flex items-start gap-3 text-sm text-ink-600">
             <input
               type="checkbox"

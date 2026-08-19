@@ -105,7 +105,7 @@ export async function saveClinic(payload: string): Promise<AdminState> {
     const digits = data.phone.display.replace(/\D/g, "");
     const national = digits.startsWith("0") ? digits.slice(1) : digits;
     data.phone.href = `tel:+90${national}`;
-    data.phone.intl = `+90 ${national}`;
+    data.phone.intl = `+90${national}`; // E.164 — schema.org telephone
 
     data.address.full = `${data.address.street}, ${data.address.district} / ${data.address.city}`;
 

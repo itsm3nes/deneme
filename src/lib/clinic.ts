@@ -22,7 +22,7 @@ export type Clinic = {
   tagline: string;
   legalName: string;
   phone: { display: string; href: string; intl: string };
-  whatsapp: { display: string; number: string; verified: boolean };
+  whatsapp: { number: string; verified: boolean };
   email: string;
   address: {
     street: string;
