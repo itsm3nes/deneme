@@ -1,17 +1,15 @@
-# Meva Ağız ve Diş Sağlığı Polikliniği — web sitesi taslağı
+# Meva Ağız ve Diş Sağlığı Polikliniği — web sitesi
 
 Yalova Bayraktepe'de hizmet veren **Meva Ağız ve Diş Sağlığı Polikliniği** için
-hazırlanmış tanıtım sitesi taslağı. Klasik bir diş kliniği sitesinde bulunması
-beklenen tüm bölümler kurulu: tedavi sayfaları, hekim kadrosu, galeri,
+hazırlanmış tanıtım sitesi: 16 tedavi sayfası, hekim kadrosu, galeri,
 öncesi/sonrası karşılaştırma, blog, S.S.S., randevu formu, iletişim ve harita,
-KVKK metni, SEO dosyaları.
+KVKK metni, SEO dosyaları ve içerik yönetim paneli.
 
-Renk yönü: **açık mavi + beyaz**, logodaki lacivert (`#2f4179`) ana marka rengi
-olarak kullanıldı.
+Renk yönü: **açık mavi + beyaz**, logodaki lacivert (`#2f4179`) ana marka rengi.
 
-> ⚠️ **Bu bir taslaktır.** Sitedeki bilgilerin bir kısmı internetteki açık
-> kaynaklardan derlendi, bir kısmı ise yer tutucudur. Yayına almadan önce
-> aşağıdaki **"Doğrulanması gerekenler"** listesini tamamlayın.
+> ⚠️ **Site henüz taslak.** Hekim kartları ve hasta yorumları yer tutucudur.
+> Yayına almadan önce aşağıdaki **[Yayın kontrol listesi](#yayın-kontrol-listesi)**
+> tamamlanmalıdır.
 
 ## Kurulum
 
@@ -19,77 +17,18 @@ Node.js 22.13+ gerekir.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+npm run dev              # http://localhost:3000
 ```
 
-Üretim için:
+| Komut | İşi |
+| --- | --- |
+| `npm run dev` | Geliştirme sunucusu |
+| `npm run build` / `npm start` | Üretim derlemesi ve sunucusu |
+| `npm run build:static` | Sunucusuz saf HTML çıktısı → `out/` |
+| `npm run preview:static` | `out/` klasörünü yerelde yayınlar |
+| `npm run lint` | ESLint |
 
-```bash
-npm run build && npm start
-```
-
-## Önizlemeyi yayınlama (Vercel)
-
-Kod tarafında hazır — ek ayar gerekmiyor.
-
-1. [vercel.com](https://vercel.com) → **Continue with GitHub** ile giriş yapın.
-2. **Add New… → Project** → `itsm3nes/deneme` deposunu **Import** edin.
-   Framework olarak Next.js kendiliğinden algılanır; build ayarlarına dokunmayın.
-3. **Deploy**.
-4. **Önemli:** Deponun varsayılan dalı hâlâ eski proje
-   (`claude/photographer-client-sharing-platform-407iwd`). Vercel üretim dalını
-   buradan aldığı için, dağıtım sonrası
-   **Project Settings → Git → Production Branch** değerini
-   `claude/yalova-meva-dental-website-uapcgn` yapıp **Redeploy** edin.
-   (Alternatif: GitHub'da deponun varsayılan dalını değiştirin.)
-
-Bundan sonra bu dala her push'ta site kendiliğinden yeniden yayınlanır.
-
-### Yayına geçerken
-
-Site, `NEXT_PUBLIC_SITE_URL` tanımlanana kadar **taslak** kabul edilir:
-`robots.txt` tüm taramayı kapatır ve sayfalar `noindex` işaretlenir — yer tutucu
-hekim kartları ve örnek yorumlar arama sonuçlarına düşmesin diye.
-
-Gerçek alan adına geçtiğinizde Vercel'de şu değişkeni tanımlayın:
-
-```
-NEXT_PUBLIC_SITE_URL = https://www.mevadis.com.tr
-```
-
-Bu değişken ayrıca canonical, Open Graph ve sitemap adreslerini de düzeltir.
-
-> ⚠️ Vercel'de dosya sistemi salt okunurdur; randevu talepleri geçici klasöre
-> yazılır ve **kalıcı değildir** (yalnızca Vercel günlüklerinde görünür).
-> Siteyi gerçekten hastalara açmadan önce formu e-posta/SMS'e bağlayın —
-> bkz. `src/app/randevu/actions.ts`.
-
-## Statik HTML (kendi bilgisayarınızdan / paylaşımlı hostingten)
-
-Siteyi sunucu gerektirmeyen saf HTML/CSS/JS'e çevirebilirsiniz:
-
-```bash
-npm install
-npm run build:static     # çıktı: out/
-npm run preview:static   # http://localhost:3000
-```
-
-`out/` klasörünün **içindekileri** herhangi bir yere koyabilirsiniz —
-paylaşımlı hostingte `public_html`, GitHub Pages, Netlify, bir USB bellek…
-Veritabanı ya da Node.js gerekmez.
-
-**Bilinmesi gerekenler:**
-
-- `index.html` dosyasına çift tıklayıp `file://` ile açmak **çalışmaz** —
-  sayfalar `/_next/...` gibi mutlak yollar kullanır. Basit bir yerel sunucu
-  gerekir; `npm run preview:static` tam olarak bunu yapar.
-- Statik sürümde sunucu olmadığı için **randevu formu** sunucuya kayıt yazamaz.
-  Bunun yerine form aynı doğrulamalardan geçer ve bilgileri hazır bir mesaj
-  hâline getirip **WhatsApp'ta açar** (`src/lib/appointment-static.ts`).
-  Sunuculu sürümde (Vercel, kendi Node sunucunuz) form normal çalışmayı sürdürür.
-- Alt sayfa adresleri klasör biçimindedir: `/tedaviler/implant/`.
-
-## Önizlemeyi yayınlama (Vercel)
+## Sayfalar
 
 | Yol | İçerik |
 | --- | --- |
@@ -97,19 +36,20 @@ Veritabanı ya da Node.js gerekmez.
 | `/hakkimizda` | Klinik tanıtımı, değerler, sterilizasyon zinciri, anlaşmalı kurumlar |
 | `/tedaviler` | 16 tedavi başlığının listesi |
 | `/tedaviler/[slug]` | Tedavi detayı: süreç adımları, kimler için uygun, özet bilgiler, tedaviye özel S.S.S. (+ FAQ yapılandırılmış verisi) |
-| `/hekimlerimiz` | Hekim kartları (şu an yer tutucu) |
+| `/hekimlerimiz` | Hekim kartları |
 | `/galeri` | Klinik fotoğrafları + öncesi/sonrası sürgülü karşılaştırma |
-| `/blog`, `/blog/[slug]` | 5 bilgilendirme yazısı |
+| `/blog`, `/blog/[slug]` | Bilgilendirme yazıları |
 | `/sss` | Gruplanmış sık sorulan sorular |
 | `/randevu` | Randevu formu + hazırlık bilgileri |
 | `/iletisim` | İletişim kartları, haftalık çalışma saatleri, form, Google Maps |
 | `/anlasmali-kurumlar` | Kurum protokolleri |
-| `/kvkk` | KVKK aydınlatma metni ve çerez politikası (örnek metin) |
+| `/kvkk` | KVKK aydınlatma metni ve çerez politikası |
+| `/yonetim` | İçerik yönetim paneli (parola korumalı, aramaya kapalı) |
 
 Ayrıca: `sitemap.xml`, `robots.txt`, `Dentist` şeması (JSON-LD), 404 sayfası,
 mobil menü, WhatsApp butonu.
 
-## İçerik nerede düzenlenir?
+## İçerik yönetimi
 
 Sitedeki metinlerin tamamı `content/` klasöründeki JSON dosyalarındadır ve
 **yönetim panelinden** düzenlenir — koda dokunmanız gerekmez.
@@ -124,22 +64,17 @@ Sitedeki metinlerin tamamı `content/` klasöründeki JSON dosyalarındadır ve
 | `content/posts.json` | Blog yazıları |
 | `content/partners.json` | Anlaşmalı kurumlar |
 
-## Yönetim paneli (`/yonetim`)
+### Paneli açma
 
-Adres, çalışma saatleri, hekimler, tedaviler, S.S.S., yorumlar ve blog yazıları
-tarayıcıdan düzenlenebilir.
-
-### Açma
-
-Panel, parola tanımlanmadan **kapalıdır**. Sunucuda şu değişkeni tanımlayın:
+Panel, parola tanımlanmadan **kapalıdır**:
 
 ```
 ADMIN_PASSWORD=uzun-ve-tahmin-edilemez-bir-parola
 ```
 
-Kendi bilgisayarınızda: proje kökünde `.env.local` dosyası oluşturup yazın,
-`npm run dev` ile açın ve <http://localhost:3000/yonetim> adresine gidin.
-Vercel'de: Project Settings → Environment Variables.
+Kendi bilgisayarınızda proje kökünde `.env.local` dosyasına yazıp `npm run dev`
+ile <http://localhost:3000/yonetim> adresine gidin. Vercel'de: Project Settings
+→ Environment Variables.
 
 ### Değişiklikler nereye yazılır?
 
@@ -149,61 +84,155 @@ Vercel'de: Project Settings → Environment Variables.
 | Vercel (dosya sistemi salt okunur) | GitHub deposuna işlenir → site kendiliğinden yeniden yayınlanır |
 
 Vercel için üç değişken daha gerekir (bkz. `.env.example`): `GITHUB_TOKEN`
-(fine-grained, yalnızca bu depoda *Contents: Read and write*), `GITHUB_REPO` ve
+(fine-grained, yalnızca bu depoda *Contents: Read and write*), `GITHUB_REPO`,
 `GITHUB_BRANCH`. Tanımlanmazsa panel açılır ama kayıt sırasında hata verir.
 
-> İçerik build sırasında sayfalara gömülür. Bu yüzden bir değişikliğin canlıda
-> görünmesi için sitenin yeniden yayınlanması gerekir — GitHub kipinde bu
-> otomatiktir (1–2 dakika), yerel kipte `npm run build` ile.
+> İçerik build sırasında sayfalara gömülür; bir değişikliğin canlıda görünmesi
+> için sitenin yeniden yayınlanması gerekir. GitHub kipinde bu otomatiktir
+> (1–2 dakika), yerel kipte `npm run build` ile.
 
 ### Panelin kapsamadıkları
 
 - **Fotoğraf yükleme** — görseller `public/galeri/` klasörüne dosya olarak eklenir.
 - **Tasarım ve bölüm sıralaması** — kod tarafındadır.
-- **Randevu talepleri** — panelde listelenmez; formu e-postaya bağlamanız önerilir.
 
 Panel `robots.txt` ile taramaya kapalıdır, `noindex` işaretlidir ve statik HTML
 sürümüne hiç dâhil edilmez.
 
-## Doğrulanması gerekenler
+## Yayınlama (Vercel)
 
-Aşağıdaki bilgiler açık kaynaklarda bulunamadı ya da teyit edilemedi. **Hiçbiri
-uydurulmadı**; yer tutucu olarak bırakıldı ve kodda `⚠️ TASLAK` / `verified: false`
-şeklinde işaretlendi.
+1. [vercel.com](https://vercel.com) → **Continue with GitHub** ile giriş yapın.
+2. **Add New… → Project** → `itsm3nes/deneme` deposunu **Import** edin.
+   Framework olarak Next.js kendiliğinden algılanır; build ayarlarına dokunmayın.
+3. **Deploy**.
+4. **Önemli:** Deponun varsayılan dalı hâlâ eski bir proje. Vercel üretim dalını
+   oradan aldığı için **Project Settings → Git → Production Branch** değerini
+   `claude/yalova-meva-dental-website-uapcgn` yapıp **Redeploy** edin.
 
-- [ ] **Hekim kadrosu** — ad, unvan, uzmanlık, özgeçmiş, fotoğraf (`src/lib/content.ts` → `doctors`). Şu an 4 yer tutucu kart var.
-- [ ] **Çalışma saatleri** — şu an hafta içi 09:00–19:00 / Cumartesi 09:00–17:00 varsayıldı (`src/lib/clinic.ts` → `hours`).
-- [ ] **WhatsApp numarası** — sabit hat numarası kullanıldı, gerçek WhatsApp hattı girilmeli (`clinic.whatsapp`).
-- [ ] **Harita konumu** — `clinic.address.geo` içindeki koordinatlar yaklaşıktır; Google Maps kaydından alınmalı.
-- [ ] **Hasta yorumları** — ana sayfadaki yorumlar örnek metindir. Gerçek yorumlarla değiştirin ya da bölümü kaldırın (hastadan yazılı izin gerekir).
-- [ ] **Anlaşmalı kurumlar** — yalnızca basına yansıyan YTSO protokolü listelendi; güncel liste alınmalı.
-- [ ] **Kuruluş yılı, ünit sayısı, klinik büyüklüğü** — hakkımızda metnine eklenmedi.
+Bundan sonra bu dala her push'ta site kendiliğinden yeniden yayınlanır.
+
+### Domain bağlama
+
+1. Domaini kayıtçınızdan (Natro, İsimtescil, Cloudflare, Namecheap…) alın.
+2. Vercel → **Project Settings → Domains → Add** → alan adınızı yazın.
+3. Vercel'in verdiği kayıtları kayıtçının DNS panelinde tanımlayın:
+
+   | Kayıt | Ad | Değer |
+   | --- | --- | --- |
+   | `A` | `@` | `76.76.21.21` |
+   | `CNAME` | `www` | `cname.vercel-dns.com` |
+
+   (Vercel ekranda güncel değerleri gösterir; oradakini esas alın.)
+4. Yayılma genelde 10–60 dakika sürer. Vercel sertifikayı (HTTPS) kendisi alır.
+5. Vercel → Domains ekranında `www` ve köksüz adresten hangisinin **birincil**
+   olacağını seçin; diğeri otomatik yönlendirilir.
+
+### Yayına geçerken zorunlu ayar
+
+Site, `NEXT_PUBLIC_SITE_URL` tanımlanana kadar **taslak** kabul edilir:
+`robots.txt` tüm taramayı kapatır ve sayfalar `noindex` işaretlenir — yer tutucu
+içerik arama sonuçlarına düşmesin diye.
+
+Domain bağlandıktan sonra Vercel'de tanımlayın ve yeniden yayınlayın:
+
+```
+NEXT_PUBLIC_SITE_URL = https://www.alan-adiniz.com
+```
+
+Bu değişken canonical, Open Graph ve sitemap adreslerini de düzeltir.
+
+## Yayın kontrol listesi
+
+Aşağıdakiler tamamlanmadan site hastalara açılmamalı. İlk dördü **panelden**
+(`/yonetim`) yapılır.
+
+- [ ] **Hekim kadrosu** — 4 kart hâlâ "Dt. Ad Soyad". Gerçek ad, unvan, uzmanlık
+      ve özgeçmişleri girin; girdikten sonra "Yer tutucu kart" kutusunun işaretini kaldırın.
+- [ ] **Hasta yorumları** — örnek metinler. Gerçek yorumlarla değiştirin (hastadan
+      yazılı izin gerekir) ya da kayıtları silin.
+- [ ] **Çalışma saatleri** — hafta içi 09:00–19:00 / Cumartesi 09:00–17:00 varsayıldı.
+      Teyit edip "Saatler klinikten teyit edildi" kutusunu işaretleyin.
+- [ ] **WhatsApp numarası** — şu an sabit hat. Gerçek WhatsApp hattını girin
+      (form talepleri buraya gidiyor, bu madde kritik).
+- [ ] **Harita konumu** — `content/clinic.json` içindeki enlem/boylam yaklaşıktır.
+- [ ] **Klinik fotoğrafları** — kesikli çerçeveli yer tutucuların yerine gerçek
+      görseller (`public/galeri/`).
+- [ ] **Logo** — çizilen vektörün yerine orijinal dosya (`public/logo.svg`).
 - [ ] **KVKK metni** — örnek taslaktır, hukukçu incelemesinden geçmelidir.
+      VERBİS kayıt yükümlülüğünüz olup olmadığını da kontrol ettirin.
+- [ ] **Anlaşmalı kurumlar** — yalnızca basına yansıyan YTSO protokolü var.
+- [ ] **`NEXT_PUBLIC_SITE_URL`** — tanımlanmadan site aramaya kapalı kalır.
+- [ ] **Eski site** — klinik `mevadis.com.tr` adresini kullanıyor. İki site aynı
+      anda yayında kalırsa arama motorları içeriği bölüşür; eskisini yeni adrese
+      301 ile yönlendirmek en temizi.
 
-### Doğrulanmış bilgiler (kaynak: mevadis.com.tr ve harita kayıtları)
+### Doğrulanmış bilgiler
+
+Kaynak: mevadis.com.tr ve harita kayıtları.
 
 - Adres: Bayraktepe Mah. Şehit Ömer Faydalı Cad. No: 77/A, Merkez / Yalova
 - Telefon: 0226 813 33 77
 - E-posta: mevadisklinikleri@gmail.com
 - Instagram: [@meva.dis](https://www.instagram.com/meva.dis/)
-- Tedavi başlıkları: implant, ortodonti, cerrahi, estetik dolgu, endodonti, protez, gülüş tasarımı, porselen dolgu, pedodonti, oral diagnoz, beyazlatma, laminate veneer, periodontoloji, restoratif tedavi, zirkonyum
+- Tedavi başlıkları: implant, ortodonti, cerrahi, estetik dolgu, endodonti,
+  protez, gülüş tasarımı, porselen dolgu, pedodonti, oral diagnoz, beyazlatma,
+  laminate veneer, periodontoloji, restoratif tedavi, zirkonyum
+
+## Randevu formu
+
+Form sunucu kullanmaz. Alanlar tarayıcıda doğrulanır (bot tuzağı dâhil),
+ardından bilgiler hazır bir mesaja çevrilip **WhatsApp'ta açılır**:
+
+```
+Merhaba, randevu talebi oluşturmak istiyorum.
+
+Ad Soyad: Ayşe Yılmaz
+Telefon: 05551112233
+Tedavi: İmplant Tedavisi
+Tercih edilen gün: 2026-09-02
+Not: Sol alt azıda ağrı var.
+```
+
+Gönderim, tıklama olayının içinde eşzamanlı yapılır; tarayıcının açılır pencere
+engelleyicisi araya girmez. Yine de engellenirse başarı ekranındaki düğmeyle
+elle açılabilir. Böylece hiçbir talep sunucuda kaybolmaz ve e-posta/SMS servisi
+kurmak gerekmez.
+
+Mantık `src/lib/appointment.ts` (doğrulama + mesaj biçimi) ve
+`src/components/site/AppointmentForm.tsx` içindedir. İleride e-postaya da
+göndermek isterseniz doğrulama sonrası bir route handler'a POST edip
+Resend/SMTP'ye iletmek yeterli — doğrulama kodu paylaşımlı olduğu için tekrar
+yazılmaz.
+
+## Statik HTML (paylaşımlı hosting / yerel)
+
+```bash
+npm run build:static     # çıktı: out/
+npm run preview:static   # http://localhost:3000
+```
+
+`out/` klasörünün **içindekileri** herhangi bir yere koyabilirsiniz —
+paylaşımlı hostingte `public_html`, GitHub Pages, Netlify. Node.js gerekmez.
+
+- `index.html` dosyasına çift tıklayıp `file://` ile açmak **çalışmaz** —
+  sayfalar `/_next/...` gibi mutlak yollar kullanır. `npm run preview:static`
+  küçük bir yerel sunucu başlatır.
+- Randevu formu statik sürümde de tam çalışır.
+- Yönetim paneli statik sürüme dâhil edilmez (sunucu ister).
+- Alt sayfa adresleri klasör biçimindedir: `/tedaviler/implant/`.
 
 ## Görseller
 
-Sitede henüz fotoğraf yok; her fotoğrafın yeri kesikli çerçeveli **yer tutucu**
-ile ve önerilen ölçüsüyle gösteriliyor (`PhotoSlot` bileşeni).
-
-Fotoğraflar hazır olduğunda:
-
-1. Dosyaları `public/galeri/` altına koyun.
-2. İlgili `<PhotoSlot … />` satırını `next/image` ile değiştirin:
+Fotoğrafların yeri kesikli çerçeveli **yer tutucu** ile ve önerilen ölçüsüyle
+gösteriliyor (`PhotoSlot` bileşeni). Fotoğraflar hazır olduğunda dosyaları
+`public/galeri/` altına koyup ilgili `<PhotoSlot … />` satırını değiştirin:
 
 ```tsx
 <Image src="/galeri/bekleme-alani.jpg" alt="Bekleme alanı" width={1200} height={900} className="rounded-xl2" />
 ```
 
 Öncesi/sonrası bileşeni (`BeforeAfter`) `before` ve `after` proplarına doğrudan
-`<Image fill />` alabilir; başka değişiklik gerekmez.
+`<Image fill />` alabilir.
 
 ### Logo
 
@@ -211,17 +240,7 @@ Fotoğraflar hazır olduğunda:
 fırçası + gülümseme yayı) benzetilerek **yeniden çizilmiş** bir vektördür ve
 `currentColor` kullandığı için her zeminde renk alır. Orijinal logo dosyanız
 hazır olduğunda `public/logo.svg` üzerine yazıp bileşendeki `<svg>` bloğunu
-`next/image` ile değiştirmeniz yeterli. Favicon: `src/app/icon.svg`.
-
-## Randevu formu
-
-Form bir Server Action ile çalışır (`src/app/randevu/actions.ts`): alanlar
-sunucuda doğrulanır, bot tuzağı vardır ve talep
-`DATA_DIR/randevu-talepleri.jsonl` dosyasına yazılır (varsayılan `./storage`).
-
-**Yayına almadan önce** bu kaydı gerçek bir kanala bağlayın — e-posta (Resend,
-SMTP), SMS ya da klinik yazılımınızın API'si. İlgili yer dosyada
-`⚠️ TASLAK` yorumuyla işaretli.
+`next/image` ile değiştirin. Favicon: `src/app/icon.svg`.
 
 ## Mevzuat notu
 
@@ -232,9 +251,13 @@ görselleri için hastadan yazılı aydınlatılmış onam gerekir. Site metinle
 
 ## Teknik
 
-- **Next.js 16** (App Router, Turbopack) + React 19 + TypeScript — hem sunuculu hem statik export ile çalışır (`next.config.ts`)
+- **Next.js 16** (App Router, Turbopack) + React 19 + TypeScript — hem sunuculu
+  hem statik export ile çalışır (`next.config.ts`)
 - **Tailwind CSS v4** — tasarım değişkenleri `src/app/globals.css` içindeki `@theme` bloğunda
 - Fontlar `next/font` ile kendi sunucumuzdan servis edilir (Inter + Plus Jakarta Sans)
 - İkonlar el yazımı inline SVG (`src/components/site/Icons.tsx`) — harici ikon paketi yok
-- Görüş alanına girince beliren bölümler saf CSS (`animation-timeline: view()`); destek yoksa içerik olduğu gibi görünür
+- Görüş alanına girince beliren bölümler saf CSS (`animation-timeline: view()`);
+  destek yoksa içerik olduğu gibi görünür
+- Herkese açık sayfalar `src/app/(site)/` rota grubunda; yönetim paneli
+  `src/app/yonetim/` altında kendi sade iskeletiyle
 - 37 sayfanın tamamı build sırasında statik üretilir

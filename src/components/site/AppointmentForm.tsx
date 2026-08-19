@@ -1,11 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
-import { createAppointmentRequest } from "@/app/(site)/randevu/actions";
-import { initialAppointmentState } from "@/lib/appointment";
+import { useState } from "react";
+import {
+  formatAppointmentMessage,
+  validateAppointment,
+  type AppointmentField,
+} from "@/lib/appointment";
+import { clinic, whatsappLink } from "@/lib/clinic";
 import { treatments } from "@/lib/treatments";
 import { Icon } from "./Icons";
+
+/**
+ * Randevu formu.
+ *
+ * Talep sunucuya yazılmaz: alanlar tarayıcıda doğrulanır, ardından bilgiler
+ * hazır bir mesaja çevrilip WhatsApp'ta açılır. Gönderim tıklama olayının
+ * içinde eşzamanlı yapılır — tarayıcının açılır pencere engelleyicisi bunu
+ * engellemez. Yine de engellenirse, başarı ekranındaki düğme elle tıklanabilir.
+ */
+
+type Errors = Partial<Record<AppointmentField, string>>;
 
 function FieldError({ children }: { children?: string }) {
   if (!children) return null;
@@ -23,44 +38,62 @@ export function AppointmentForm({
   variant?: "full" | "compact";
   defaultTreatment?: string;
 }) {
-  const [state, formAction, isPending] = useActionState(
-    createAppointmentRequest,
-    initialAppointmentState,
-  );
+  const [errors, setErrors] = useState<Errors>({});
+  const [sentUrl, setSentUrl] = useState<string | null>(null);
 
-  if (state.status === "success") {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const { values, errors: found, phone, isBot } = validateAppointment(formData);
+
+    if (isBot) return;
+
+    if (Object.keys(found).length > 0) {
+      setErrors(found);
+      return;
+    }
+
+    setErrors({});
+    const url = whatsappLink(formatAppointmentMessage(values, phone));
+    window.open(url, "_blank", "noopener,noreferrer");
+    setSentUrl(url);
+  };
+
+  if (sentUrl) {
     return (
       <div className="flex flex-col items-center gap-4 rounded-xl2 bg-aqua-50 px-6 py-10 text-center ring-1 ring-aqua-100 ring-inset">
         <span className="flex size-14 items-center justify-center rounded-full bg-aqua-500 text-white">
-          <Icon name="check" className="size-7" />
+          <Icon name="whatsapp" className="size-7" />
         </span>
-        <h3 className="text-xl font-extrabold">
-          {state.title ?? "Talebiniz alındı"}
-        </h3>
+        <h3 className="text-xl font-extrabold">WhatsApp&apos;ta açıldı</h3>
         <p className="max-w-sm text-sm leading-relaxed text-ink-600">
-          {state.message}
+          Bilgileriniz hazır bir mesaja dönüştürüldü. Talebinizi tamamlamak için
+          mesajı göndermeniz yeterli.
         </p>
-        <Link href="/" className="btn btn-outline btn-sm">
+        <div className="flex flex-wrap justify-center gap-2">
+          <a
+            href={sentUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-primary btn-sm"
+          >
+            <Icon name="whatsapp" className="size-4" />
+            Pencere açılmadıysa tıklayın
+          </a>
+          <a href={clinic.phone.href} className="btn btn-outline btn-sm">
+            <Icon name="phone" className="size-4" />
+            {clinic.phone.display}
+          </a>
+        </div>
+        <Link href="/" className="text-sm font-semibold text-aqua-700 hover:underline">
           Ana sayfaya dön
         </Link>
       </div>
     );
   }
 
-  const v = state.values ?? {};
-  const e = state.errors ?? {};
-
   return (
-    <form action={formAction} className="grid gap-4" noValidate>
-      {state.status === "error" && state.message ? (
-        <p
-          role="alert"
-          className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 ring-1 ring-red-100 ring-inset"
-        >
-          {state.message}
-        </p>
-      ) : null}
-
+    <form onSubmit={handleSubmit} className="grid gap-4" noValidate>
       {/* bot tuzağı */}
       <input
         type="text"
@@ -82,11 +115,10 @@ export function AppointmentForm({
             className="field"
             required
             autoComplete="name"
-            defaultValue={v.adSoyad}
-            aria-invalid={Boolean(e.adSoyad)}
+            aria-invalid={Boolean(errors.adSoyad)}
             placeholder="Adınız ve soyadınız"
           />
-          <FieldError>{e.adSoyad}</FieldError>
+          <FieldError>{errors.adSoyad}</FieldError>
         </div>
 
         <div>
@@ -101,11 +133,10 @@ export function AppointmentForm({
             className="field"
             required
             autoComplete="tel"
-            defaultValue={v.telefon}
-            aria-invalid={Boolean(e.telefon)}
+            aria-invalid={Boolean(errors.telefon)}
             placeholder="0 5__ ___ __ __"
           />
-          <FieldError>{e.telefon}</FieldError>
+          <FieldError>{errors.telefon}</FieldError>
         </div>
       </div>
 
@@ -118,8 +149,8 @@ export function AppointmentForm({
             id="tedavi"
             name="tedavi"
             className="field"
-            defaultValue={v.tedavi ?? defaultTreatment ?? ""}
-            aria-invalid={Boolean(e.tedavi)}
+            defaultValue={defaultTreatment ?? ""}
+            aria-invalid={Boolean(errors.tedavi)}
           >
             <option value="">Seçiniz (isteğe bağlı)</option>
             {treatments.map((t) => (
@@ -128,7 +159,7 @@ export function AppointmentForm({
               </option>
             ))}
           </select>
-          <FieldError>{e.tedavi}</FieldError>
+          <FieldError>{errors.tedavi}</FieldError>
         </div>
 
         {variant === "full" ? (
@@ -142,11 +173,10 @@ export function AppointmentForm({
               type="email"
               className="field"
               autoComplete="email"
-              defaultValue={v.eposta}
-              aria-invalid={Boolean(e.eposta)}
+              aria-invalid={Boolean(errors.eposta)}
               placeholder="ornek@eposta.com"
             />
-            <FieldError>{e.eposta}</FieldError>
+            <FieldError>{errors.eposta}</FieldError>
           </div>
         ) : null}
       </div>
@@ -163,21 +193,15 @@ export function AppointmentForm({
                 name="tarih"
                 type="date"
                 className="field"
-                defaultValue={v.tarih}
-                aria-invalid={Boolean(e.tarih)}
+                aria-invalid={Boolean(errors.tarih)}
               />
-              <FieldError>{e.tarih}</FieldError>
+              <FieldError>{errors.tarih}</FieldError>
             </div>
             <div>
               <label className="label" htmlFor="saat">
                 Tercih ettiğiniz saat aralığı
               </label>
-              <select
-                id="saat"
-                name="saat"
-                className="field"
-                defaultValue={v.saat ?? ""}
-              >
+              <select id="saat" name="saat" className="field" defaultValue="">
                 <option value="">Fark etmez</option>
                 <option value="sabah">Sabah (09:00 – 12:00)</option>
                 <option value="ogleden-sonra">Öğleden sonra (12:00 – 16:00)</option>
@@ -195,11 +219,10 @@ export function AppointmentForm({
               name="mesaj"
               rows={4}
               className="field resize-y"
-              defaultValue={v.mesaj}
-              aria-invalid={Boolean(e.mesaj)}
+              aria-invalid={Boolean(errors.mesaj)}
               placeholder="Örn. sağ alt azı dişimde sıcak-soğuk hassasiyeti var."
             />
-            <FieldError>{e.mesaj}</FieldError>
+            <FieldError>{errors.mesaj}</FieldError>
           </div>
         </>
       ) : null}
@@ -210,7 +233,7 @@ export function AppointmentForm({
             type="checkbox"
             name="kvkk"
             className="mt-0.5 size-4.5 shrink-0 rounded accent-aqua-500"
-            aria-invalid={Boolean(e.kvkk)}
+            aria-invalid={Boolean(errors.kvkk)}
           />
           <span>
             <Link href="/kvkk" className="font-semibold text-aqua-700 underline">
@@ -220,24 +243,18 @@ export function AppointmentForm({
             onaylıyorum. *
           </span>
         </label>
-        <FieldError>{e.kvkk}</FieldError>
+        <FieldError>{errors.kvkk}</FieldError>
       </div>
 
-      <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
-        {isPending ? (
-          "Gönderiliyor…"
-        ) : (
-          <>
-            <Icon name="calendar" className="size-4" />
-            Randevu Talebi Gönder
-          </>
-        )}
+      <button type="submit" className="btn btn-primary w-full">
+        <Icon name="whatsapp" className="size-4" />
+        WhatsApp ile Randevu Talebi Gönder
       </button>
 
       <p className="hint">
-        Form gönderimi randevunuzu kesinleştirmez. Talebinizi aldıktan sonra
-        sizi arayarak uygun saati birlikte belirliyoruz. Acil durumlarda lütfen
-        doğrudan telefonla ulaşın.
+        Form gönderimi randevunuzu kesinleştirmez; bilgileriniz WhatsApp mesajına
+        dönüştürülür. Talebiniz bize ulaştıktan sonra sizi arayarak uygun saati
+        birlikte belirliyoruz. Acil durumlarda lütfen doğrudan telefonla ulaşın.
       </p>
     </form>
   );

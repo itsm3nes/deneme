@@ -1,12 +1,12 @@
 import type { NextConfig } from "next";
 
 /**
- * `STATIC_EXPORT=1 npm run build` çalıştırıldığında site, sunucu gerektirmeyen
- * saf HTML/CSS/JS olarak `out/` klasörüne üretilir (bkz. README → "Statik HTML").
+ * `STATIC_EXPORT=1 npm run build` (yani `npm run build:static`) çalıştırıldığında
+ * site, sunucu gerektirmeyen saf HTML/CSS/JS olarak `out/` klasörüne üretilir.
+ * Bkz. README → "Statik HTML".
  *
- * Statik export'ta Server Action desteklenmediği için randevu formunun eylemi,
- * aynı imzaya sahip istemci tarafı sürümüyle değiştirilir; form WhatsApp'a
- * yönlendirir. Sunucu ile çalışan normal build bundan etkilenmez.
+ * Randevu formu sunucu kullanmadığı (WhatsApp'a yönlendirdiği) için iki sürüm
+ * arasında davranış farkı yoktur.
  */
 const staticExport = process.env.STATIC_EXPORT === "1";
 
@@ -17,11 +17,6 @@ const nextConfig: NextConfig = staticExport
       trailingSlash: true,
       // Görüntü optimizasyonu sunucu ister; statik sürümde kapatılır.
       images: { unoptimized: true },
-      turbopack: {
-        resolveAlias: {
-          "@/app/(site)/randevu/actions": "./src/lib/appointment-static.ts",
-        },
-      },
     }
   : {};
 

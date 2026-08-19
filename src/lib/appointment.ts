@@ -1,11 +1,9 @@
 /**
- * Randevu formunun paylaşılan tipleri, doğrulaması ve başlangıç durumu.
+ * Randevu formunun doğrulaması ve mesaj biçimlendirmesi.
  *
- * Bunlar bilerek Server Action dosyasının dışında tutuldu:
- * - `"use server"` işaretli bir dosya yalnızca async fonksiyon export edebilir;
- *   sabit ya da tip export ederse çalışma zamanında hata verir.
- * - Aynı doğrulama, statik export sürümünde istemci tarafında da kullanılır
- *   (bkz. `appointment-static.ts`).
+ * Form sunucuya kayıt yazmaz: doğrulamadan geçen talep hazır bir mesaja
+ * çevrilip WhatsApp'ta açılır. Bu sayede hem sunuculu hem statik sürümde
+ * aynı şekilde çalışır ve hiçbir talep sunucuda kaybolmaz.
  */
 
 import { treatments } from "./treatments";
@@ -19,17 +17,6 @@ export type AppointmentField =
   | "saat"
   | "mesaj"
   | "kvkk";
-
-export type AppointmentState = {
-  status: "idle" | "success" | "error";
-  /** Başarı ekranındaki başlık; verilmezse "Talebiniz alındı" kullanılır. */
-  title?: string;
-  message?: string;
-  errors?: Partial<Record<AppointmentField, string>>;
-  values?: Partial<Record<AppointmentField, string>>;
-};
-
-export const initialAppointmentState: AppointmentState = { status: "idle" };
 
 export type AppointmentValues = Record<
   Exclude<AppointmentField, "kvkk">,
