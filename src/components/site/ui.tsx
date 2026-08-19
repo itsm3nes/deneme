@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { clinic, whatsappLink } from "@/lib/clinic";
+import type { Photo } from "@/lib/gallery";
 import { Icon, type IconName } from "./Icons";
 
 export function SectionHeading({
@@ -58,6 +60,45 @@ export function PhotoSlot({
       <Icon name={icon} className="size-8 text-aqua-400" />
       <p className="text-sm font-semibold text-brand-700">{label}</p>
       {hint ? <p className="text-xs text-ink-400">{hint}</p> : null}
+    </div>
+  );
+}
+
+/**
+ * Yüklenmiş fotoğrafı gösterir; henüz yüklenmemişse yerine kesikli çerçeveli
+ * yer tutucu koyar. Böylece galeri boşken de sayfa düzeni bozulmaz.
+ */
+export function SitePhoto({
+  photo,
+  label,
+  hint,
+  icon = "tooth",
+  className = "",
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
+  priority = false,
+}: {
+  photo: Photo | null | undefined;
+  label: string;
+  hint?: string;
+  icon?: IconName;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+}) {
+  if (!photo) {
+    return <PhotoSlot label={label} hint={hint} icon={icon} className={className} />;
+  }
+
+  return (
+    <div className={`relative overflow-hidden rounded-xl2 bg-ink-100 ${className}`}>
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover"
+      />
     </div>
   );
 }

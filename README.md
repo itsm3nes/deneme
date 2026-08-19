@@ -63,6 +63,7 @@ Sitedeki metinlerin tamamı `content/` klasöründeki JSON dosyalarındadır ve
 | `content/testimonials.json` | Hasta yorumları |
 | `content/posts.json` | Blog yazıları |
 | `content/partners.json` | Anlaşmalı kurumlar |
+| `content/gallery.json` | Galeri fotoğrafları ve öncesi/sonrası vakaları |
 
 ### Paneli açma
 
@@ -91,9 +92,24 @@ Vercel için üç değişken daha gerekir (bkz. `.env.example`): `GITHUB_TOKEN`
 > için sitenin yeniden yayınlanması gerekir. GitHub kipinde bu otomatiktir
 > (1–2 dakika), yerel kipte `npm run build` ile.
 
+### Fotoğraflar
+
+`/yonetim/galeri` ekranından yüklenir. Görseller **tarayıcıda** küçültülüp
+WebP'ye çevrilir (uzun kenar en fazla 1600 px) — telefondan çekilmiş 5 MB'lık
+bir kare ~200 KB'a iner. Dosyalar `public/galeri/` altında saklanır.
+
+- Her fotoğrafa **açıklama (alt) metni zorunludur**: görme engelli ziyaretçiler
+  ekran okuyucuyla bunu duyar, arama motorları da bunu okur.
+- Sıralama sitede de geçerlidir: ilk iki fotoğraf ana sayfa ve hakkımızda
+  bölümlerinde, sonrakiler ana sayfadaki galeri şeridinde, tamamı galeri
+  sayfasında görünür.
+- Yüklenmemiş her alan kesikli çerçeveli yer tutucu olarak kalır; yani galeri
+  boşken de site tutarlı görünür.
+- Öncesi/sonrası vakaları da buradan eklenir. Hasta görselleri yalnızca yazılı
+  aydınlatılmış onamla yayımlanabilir.
+
 ### Panelin kapsamadıkları
 
-- **Fotoğraf yükleme** — görseller `public/galeri/` klasörüne dosya olarak eklenir.
 - **Tasarım ve bölüm sıralaması** — kod tarafındadır.
 
 Panel `robots.txt` ile taramaya kapalıdır, `noindex` işaretlidir ve statik HTML
@@ -162,8 +178,8 @@ Aşağıdakiler tamamlanmadan site hastalara açılmamalı. İlk üçü **paneld
 - [ ] **WhatsApp numarası** — şu an sabit hat. Gerçek WhatsApp hattını girin
       (form talepleri buraya gidiyor, bu madde kritik).
 - [ ] **Harita konumu** — `content/clinic.json` içindeki enlem/boylam yaklaşıktır.
-- [ ] **Klinik fotoğrafları** — kesikli çerçeveli yer tutucuların yerine gerçek
-      görseller (`public/galeri/`).
+- [ ] **Klinik fotoğrafları** — panelden yükleyin (`/yonetim/galeri`); yüklenene
+      kadar kesikli çerçeveli yer tutucular görünür.
 - [ ] **Logo** — çizilen vektörün yerine orijinal dosya (`public/logo.svg`).
 - [ ] **KVKK metni** — örnek taslaktır, hukukçu incelemesinden geçmelidir.
       VERBİS kayıt yükümlülüğünüz olup olmadığını da kontrol ettirin.

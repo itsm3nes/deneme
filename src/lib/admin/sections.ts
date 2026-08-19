@@ -34,6 +34,7 @@ export type FieldDef = {
 
 export type SectionId =
   | "clinic"
+  | "gallery"
   | "treatments"
   | "doctors"
   | "faqs"
@@ -41,7 +42,7 @@ export type SectionId =
   | "posts"
   | "partners";
 
-export type ListSectionId = Exclude<SectionId, "clinic" | "partners">;
+export type ListSectionId = Exclude<SectionId, "clinic" | "gallery" | "partners">;
 
 export type SectionDef = {
   id: SectionId;

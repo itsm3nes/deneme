@@ -5,11 +5,12 @@ import {
   CtaBand,
   DraftNote,
   PageHero,
-  PhotoSlot,
+  SitePhoto,
   SectionHeading,
 } from "@/components/site/ui";
 import { clinic } from "@/lib/clinic";
 import { partners } from "@/lib/content";
+import { pickPhotos } from "@/lib/gallery";
 
 export const metadata: Metadata = {
   title: "Hakkımızda",
@@ -42,6 +43,8 @@ const values = [
 ];
 
 export default function AboutPage() {
+  const [photo1, photo2] = pickPhotos(2);
+
   return (
     <>
       <PageHero
@@ -82,13 +85,15 @@ export default function AboutPage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <PhotoSlot
+            <SitePhoto
+              photo={photo1}
               label="Klinik dış cephe"
               hint="Önerilen: 800×1000 px"
               icon="pin"
               className="aspect-4/5 sm:mt-10"
             />
-            <PhotoSlot
+            <SitePhoto
+              photo={photo2}
               label="Bekleme alanı"
               hint="Önerilen: 800×1000 px"
               icon="users"

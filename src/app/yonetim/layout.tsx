@@ -70,6 +70,14 @@ export default async function AdminLayout({
                   Klinik bilgileri
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/yonetim/galeri"
+                  className="block rounded-lg px-3 py-2 text-sm font-semibold text-ink-600 hover:bg-white hover:text-brand-800"
+                >
+                  Galeri
+                </Link>
+              </li>
               {sectionList.map((section) => (
                 <li key={section.id}>
                   <Link

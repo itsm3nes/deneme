@@ -7,6 +7,7 @@ import { Icon } from "@/components/site/Icons";
 import { clinic } from "@/lib/clinic";
 import { doctors, faqs, posts, testimonials } from "@/lib/content";
 import { treatments } from "@/lib/treatments";
+import { gallery } from "@/lib/gallery";
 
 const counts: Record<string, number> = {
   doctors: doctors.length,
@@ -31,6 +32,9 @@ export default async function AdminHomePage() {
       : null,
     !clinic.whatsapp.verified
       ? "WhatsApp numarası doğrulanmadı — gerçek hattı girin."
+      : null,
+    gallery.photos.length === 0
+      ? "Klinik fotoğrafı yüklenmedi — sitede yer tutucular görünüyor."
       : null,
   ].filter(Boolean) as string[];
 
@@ -73,6 +77,19 @@ export default async function AdminHomePage() {
           </span>
         </Link>
 
+        <Link href="/yonetim/galeri" className="card card-hover group flex items-start gap-4 p-5">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-aqua-50 text-sm font-extrabold text-aqua-600">
+            {gallery.photos.length}
+          </span>
+          <span>
+            <span className="block font-bold text-brand-800">Galeri</span>
+            <span className="mt-1 block text-sm leading-relaxed text-ink-500">
+              Klinik fotoğrafları ve öncesi/sonrası vakaları; yüklerken otomatik
+              küçültülür.
+            </span>
+          </span>
+        </Link>
+
         {sectionList.map((section) => (
           <Link
             key={section.id}
@@ -95,11 +112,6 @@ export default async function AdminHomePage() {
       <section className="card mt-8 p-5">
         <h2 className="text-sm font-bold text-brand-800">Panelin kapsamadıkları</h2>
         <ul className="mt-3 grid gap-2 text-sm text-ink-500">
-          <li>
-            • <strong className="font-semibold text-ink-700">Fotoğraflar:</strong>{" "}
-            görseller <code className="rounded bg-ink-100 px-1">public/galeri/</code>{" "}
-            klasörüne dosya olarak eklenir; panelden yükleme henüz yok.
-          </li>
           <li>
             • <strong className="font-semibold text-ink-700">Sayfa tasarımı</strong>{" "}
             ve bölüm sıralaması kod tarafındadır.

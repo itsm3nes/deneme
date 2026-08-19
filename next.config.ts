@@ -10,6 +10,13 @@ import type { NextConfig } from "next";
  */
 const staticExport = process.env.STATIC_EXPORT === "1";
 
+/**
+ * Panelden görsel yüklenebilmesi için Server Action gövde sınırı yükseltilir.
+ * Görseller tarayıcıda küçültüldüğü için ~200 KB civarında gelir; 2 MB bolca
+ * pay bırakır.
+ */
+const serverActions = { bodySizeLimit: "2mb" } as const;
+
 const nextConfig: NextConfig = staticExport
   ? {
       output: "export",
@@ -18,6 +25,6 @@ const nextConfig: NextConfig = staticExport
       // Görüntü optimizasyonu sunucu ister; statik sürümde kapatılır.
       images: { unoptimized: true },
     }
-  : {};
+  : { experimental: { serverActions } };
 
 export default nextConfig;

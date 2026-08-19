@@ -6,7 +6,7 @@ import {
   CtaBand,
   DoctorCard,
   FaqItem,
-  PhotoSlot,
+  SitePhoto,
   PostCard,
   SectionHeading,
   TreatmentCard,
@@ -14,6 +14,7 @@ import {
 import { clinic, whatsappLink } from "@/lib/clinic";
 import { doctors, faqs, posts, testimonials } from "@/lib/content";
 import { treatments } from "@/lib/treatments";
+import { pickPhotos } from "@/lib/gallery";
 
 const whyUs = [
   {
@@ -63,6 +64,10 @@ export default function HomePage() {
   const weekday = clinic.hours.weekly[0];
   const weekdayHours = `${weekday.open} – ${weekday.close}`;
   const openDays = clinic.hours.weekly.filter((day) => day.open).length;
+  // Galerideki ilk iki fotoğraf "neden biz" bölümünde, sonraki altısı
+  // galeri şeridinde kullanılır. Eksik olanların yerine yer tutucu gelir.
+  const [intro1, intro2] = pickPhotos(2);
+  const stripPhotos = pickPhotos(6, 2);
 
   return (
     <>
@@ -279,13 +284,15 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:gap-5">
-            <PhotoSlot
+            <SitePhoto
+              photo={intro1}
               label="Klinik girişi"
               hint="Önerilen: 800×1000 px"
               icon="pin"
               className="aspect-4/5 sm:mt-8"
             />
-            <PhotoSlot
+            <SitePhoto
+              photo={intro2}
               label="Muayene odası"
               hint="Önerilen: 800×1000 px"
               icon="xray"
@@ -352,9 +359,10 @@ export default function HomePage() {
               { label: "Röntgen odası", icon: "xray" as const },
               { label: "Çocuk köşesi", icon: "child" as const },
               { label: "Klinik dış cephe", icon: "pin" as const },
-            ].map((item) => (
-              <PhotoSlot
+            ].map((item, index) => (
+              <SitePhoto
                 key={item.label}
+                photo={stripPhotos[index]}
                 label={item.label}
                 hint="Önerilen: 1200×900 px"
                 icon={item.icon}

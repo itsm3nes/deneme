@@ -12,3 +12,8 @@ export type AdminState = {
 };
 
 export const initialAdminState: AdminState = { status: "idle" };
+
+/** Görsel yükleme sonucu. */
+export type UploadResult =
+  | { ok: true; src: string }
+  | { ok: false; message: string };
