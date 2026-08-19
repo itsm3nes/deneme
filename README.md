@@ -127,27 +127,23 @@ sürümüne hiç dâhil edilmez.
 
 Bundan sonra bu dala her push'ta site kendiliğinden yeniden yayınlanır.
 
-### Domain bağlama — mevadisyalova.com
+### Domain — mevadisyalova.com
 
-Birincil adres **`https://mevadisyalova.com`** (www'suz) olarak planlandı;
+Domain **Vercel üzerinden** alındı. Bu yolda DNS ayarı gerekmez: nameserver'lar,
+A/CNAME kayıtları ve HTTPS sertifikası kendiliğinden yapılandırılır.
+
+Birincil adres **`https://mevadisyalova.com`** (www'suz);
 `www.mevadisyalova.com` buraya yönlendirilir.
 
-1. Vercel → **Project Settings → Domains → Add** → `mevadisyalova.com` ekleyin,
-   ardından `www.mevadisyalova.com` ekleyip **Redirect to mevadisyalova.com**
-   seçeneğini işaretleyin.
-2. Vercel'in gösterdiği kayıtları domain kayıtçınızın DNS panelinde tanımlayın:
+Kontrol edilecekler — Vercel → **Project Settings → Domains**:
 
-   | Kayıt | Ad | Değer |
-   | --- | --- | --- |
-   | `A` | `@` | `76.76.21.21` |
-   | `CNAME` | `www` | `cname.vercel-dns.com` |
+1. `mevadisyalova.com` **doğru projeye** bağlı ve "Valid Configuration" görünüyor.
+2. `www.mevadisyalova.com` ekli ve **Redirect to mevadisyalova.com** seçili.
+3. Sertifika hazır (kilit simgesi). Yeni domainlerde birkaç dakika sürebilir.
 
-   Vercel ekranda güncel değerleri gösterir; **oradakini esas alın** — bu tablo
-   yalnızca örnektir. Kayıtçı "TTL" sorarsa varsayılanı bırakın.
-3. Yayılma genelde 10–60 dakika sürer (bazen birkaç saat). Vercel HTTPS
-   sertifikasını kendisi alır; ek işlem gerekmez.
-4. Kayıtçınızda önceden tanımlı `A` / `CNAME` park kayıtları varsa silin —
-   yoksa doğrulama takılır.
+Domaini başka bir kayıtçıdan almış olsaydınız Vercel'in gösterdiği `A` ve
+`CNAME` kayıtlarını o kayıtçının DNS panelinde tanımlamanız gerekirdi; Vercel'den
+alındığında bu adım atlanır.
 
 ### Yayına geçerken zorunlu ayar
 
