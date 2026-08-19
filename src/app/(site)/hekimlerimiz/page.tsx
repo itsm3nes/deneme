@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { CtaBand, DoctorCard, DraftNote, PageHero } from "@/components/site/ui";
-import { doctors } from "@/lib/content";
+import { CtaBand, DoctorCard, PageHero } from "@/components/site/ui";
+import { Icon } from "@/components/site/Icons";
+import { publicDoctors } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Hekimlerimiz",
@@ -21,27 +22,30 @@ export default function DoctorsPage() {
 
       <section className="section">
         <div className="container-x">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {doctors.map((d) => (
-              <div key={d.slug} className="reveal">
-                <DoctorCard {...d} />
-              </div>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-10 max-w-2xl">
-            <DraftNote>
-              Hekim adları, unvanları, mezuniyet bilgileri ve fotoğrafları açık
-              kaynaklarda bulunamadığı için uydurulmadı. Gerçek bilgiler{" "}
-              <code className="rounded bg-amber-100 px-1">
-                src/lib/content.ts
-              </code>{" "}
-              içindeki{" "}
-              <code className="rounded bg-amber-100 px-1">doctors</code> dizisine
-              yazıldığında bu sayfa kendiliğinden güncellenir. Hekim
-              tanıtımlarında Sağlık Bakanlığı tanıtım kurallarına uyulmalıdır.
-            </DraftNote>
-          </div>
+          {publicDoctors.length > 0 ? (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {publicDoctors.map((doctor) => (
+                <div key={doctor.slug} className="reveal">
+                  <DoctorCard {...doctor} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* Hekim bilgileri girilene kadar boş kart dizmek yerine, ziyaretçiyi
+               doğrudan iletişime yönlendiren sade bir bölüm gösterilir. */
+            <div className="card mx-auto max-w-xl p-8 text-center">
+              <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-aqua-50 text-aqua-600">
+                <Icon name="users" className="size-6" />
+              </span>
+              <h2 className="mt-4 text-xl font-extrabold">
+                Kadromuz hakkında bilgi almak için
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-ink-500">
+                Hangi hekimimizin ilgileneceğini şikâyetinize göre belirliyoruz.
+                Bize ulaşın, sizi doğru hekime yönlendirelim.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

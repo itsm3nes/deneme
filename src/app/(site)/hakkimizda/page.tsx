@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Icon } from "@/components/site/Icons";
 import {
   CtaBand,
-  DraftNote,
   PageHero,
   SitePhoto,
   SectionHeading,
@@ -55,7 +54,7 @@ export default function AboutPage() {
       />
 
       <section className="section">
-        <div className="container-x grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className={`container-x grid gap-12 lg:gap-16 ${photo1 ? "lg:grid-cols-2 lg:items-center" : ""}`}>
           <div className="prose-lite">
             <h2 className="text-2xl font-extrabold sm:text-3xl">Kliniğimiz</h2>
             <p className="mt-5">
@@ -77,29 +76,17 @@ export default function AboutPage() {
               nedenle tedavi kadar koruyucu uygulamalara ve düzenli kontrollere
               de önem veriyoruz.
             </p>
-            <DraftNote>
-              Kuruluş yılı, klinik büyüklüğü, ünit sayısı ve kadro bilgileri
-              açık kaynaklarda doğrulanamadığı için bu metne eklenmedi.
-              Klinikten alınacak bilgilerle bu bölüm zenginleştirilmelidir.
-            </DraftNote>
           </div>
 
+          {photo1 ? (
           <div className="grid gap-4 sm:grid-cols-2">
             <SitePhoto
               photo={photo1}
-              label="Klinik dış cephe"
-              hint="Önerilen: 800×1000 px"
-              icon="pin"
               className="aspect-4/5 sm:mt-10"
             />
-            <SitePhoto
-              photo={photo2}
-              label="Bekleme alanı"
-              hint="Önerilen: 800×1000 px"
-              icon="users"
-              className="aspect-4/5"
-            />
+            <SitePhoto photo={photo2} className="aspect-4/5" />
           </div>
+          ) : null}
         </div>
       </section>
 
@@ -172,15 +159,6 @@ export default function AboutPage() {
                 </li>
               ))}
             </ul>
-            <DraftNote>
-              Anlaşmalı kurum listesi güncel olmayabilir; klinikten alınacak
-              güncel listeyle{" "}
-              <code className="rounded bg-amber-100 px-1">
-                src/lib/content.ts
-              </code>{" "}
-              içindeki <code className="rounded bg-amber-100 px-1">partners</code>{" "}
-              bölümü güncellenmelidir.
-            </DraftNote>
             <Link
               href="/anlasmali-kurumlar"
               className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-aqua-600 hover:text-aqua-700"

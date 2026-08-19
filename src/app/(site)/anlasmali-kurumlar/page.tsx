@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Icon } from "@/components/site/Icons";
-import { CtaBand, DraftNote, PageHero } from "@/components/site/ui";
+import { CtaBand, PageHero } from "@/components/site/ui";
 import { partners } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -56,15 +56,6 @@ export default function PartnersPage() {
               ))}
             </ol>
           </div>
-
-          <DraftNote>
-            Bu sayfadaki liste basına yansımış tek bir protokole dayanmaktadır ve
-            güncel olmayabilir. Güncel anlaşmalı kurum listesini klinikten alıp{" "}
-            <code className="rounded bg-amber-100 px-1">src/lib/content.ts</code>{" "}
-            dosyasındaki{" "}
-            <code className="rounded bg-amber-100 px-1">partners</code> bölümüne
-            işleyin. İndirim oranları ve fiyat bilgisi sitede yayımlanmamalıdır.
-          </DraftNote>
         </div>
       </section>
 

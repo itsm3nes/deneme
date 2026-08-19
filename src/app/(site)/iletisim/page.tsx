@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AppointmentForm } from "@/components/site/AppointmentForm";
 import { Icon } from "@/components/site/Icons";
-import { DraftNote, PageHero, SectionHeading } from "@/components/site/ui";
+import { PageHero, SectionHeading } from "@/components/site/ui";
 import { clinic, whatsappLink } from "@/lib/clinic";
 
 export const metadata: Metadata = {
@@ -132,17 +132,6 @@ export default function ContactPage() {
                   <p className="hint">{clinic.hours.note}</p>
                 </div>
               </div>
-              {!clinic.hours.verified ? (
-                <DraftNote>
-                  Çalışma saatleri açık kaynaklarda doğrulanamadı; yayına almadan
-                  önce klinikten teyit alıp{" "}
-                  <code className="rounded bg-amber-100 px-1">
-                    src/lib/clinic.ts
-                  </code>{" "}
-                  dosyasındaki <code className="rounded bg-amber-100 px-1">hours</code>{" "}
-                  bölümünü güncelleyin.
-                </DraftNote>
-              ) : null}
             </div>
 
             <div className="flex gap-3">
@@ -195,8 +184,7 @@ export default function ContactPage() {
           </div>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs text-ink-400">
-              Harita Google Maps üzerinden yüklenir. Konum pini yayın öncesi
-              klinikten teyit edilmelidir.
+              Harita Google Maps üzerinden yüklenir.
             </p>
             <a
               href={clinic.address.directionsUrl}

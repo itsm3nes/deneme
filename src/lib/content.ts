@@ -57,6 +57,16 @@ export const testimonials = testimonialsJson as Testimonial[];
 export const posts = postsJson as Post[];
 export const partners = partnersJson as Partners;
 
+/**
+ * Sitede yalnızca gerçek kayıtlar gösterilir. `placeholder` işaretli hekim
+ * kartları ve örnek yorumlar ziyaretçiye çıkmaz — panelde durmayı sürdürür ki
+ * doldurulacakları belli olsun.
+ */
+export const publicDoctors = doctors.filter((doctor) => !doctor.placeholder);
+export const publicTestimonials = testimonials.filter(
+  (testimonial) => !testimonial.placeholder,
+);
+
 export function getPost(slug: string) {
   return posts.find((p) => p.slug === slug);
 }

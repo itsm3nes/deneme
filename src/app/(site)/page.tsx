@@ -12,7 +12,7 @@ import {
   TreatmentCard,
 } from "@/components/site/ui";
 import { clinic, whatsappLink } from "@/lib/clinic";
-import { doctors, faqs, posts, testimonials } from "@/lib/content";
+import { faqs, posts, publicDoctors, publicTestimonials } from "@/lib/content";
 import { treatments } from "@/lib/treatments";
 import { pickPhotos } from "@/lib/gallery";
 
@@ -67,6 +67,7 @@ export default function HomePage() {
   // Galerideki ilk iki fotoğraf "neden biz" bölümünde, sonraki altısı
   // galeri şeridinde kullanılır. Eksik olanların yerine yer tutucu gelir.
   const [intro1, intro2] = pickPhotos(2);
+  const hasIntroPhotos = Boolean(intro1);
   const stripPhotos = pickPhotos(6, 2);
 
   return (
@@ -260,7 +261,7 @@ export default function HomePage() {
 
       {/* ---------------- Neden biz ---------------- */}
       <section className="section bg-ink-50/70">
-        <div className="container-x grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className={`container-x grid gap-12 lg:gap-16 ${hasIntroPhotos ? "lg:grid-cols-2 lg:items-center" : ""}`}>
           <div>
             <SectionHeading
               align="left"
@@ -283,22 +284,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:gap-5">
-            <SitePhoto
-              photo={intro1}
-              label="Klinik girişi"
-              hint="Önerilen: 800×1000 px"
-              icon="pin"
-              className="aspect-4/5 sm:mt-8"
-            />
-            <SitePhoto
-              photo={intro2}
-              label="Muayene odası"
-              hint="Önerilen: 800×1000 px"
-              icon="xray"
-              className="aspect-4/5"
-            />
-          </div>
+          {hasIntroPhotos ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:gap-5">
+              <SitePhoto photo={intro1} className="aspect-4/5 sm:mt-8" />
+              <SitePhoto photo={intro2} className="aspect-4/5" />
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -326,96 +317,83 @@ export default function HomePage() {
       </section>
 
       {/* ---------------- Hekimler ---------------- */}
+      {publicDoctors.length > 0 ? (
       <section className="section bg-ink-50/70">
-        <div className="container-x">
-          <SectionHeading
-            eyebrow="Hekim kadromuz"
-            title="Tedavinizi kim üstleniyor?"
-            description="Her tedavi, ilgili alanda çalışan hekimimiz tarafından planlanır ve yürütülür."
-          />
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {doctors.map((d) => (
-              <div key={d.slug} className="reveal">
-                <DoctorCard {...d} />
-              </div>
-            ))}
+          <div className="container-x">
+            <SectionHeading
+              eyebrow="Hekim kadromuz"
+              title="Tedavinizi kim üstleniyor?"
+              description="Her tedavi, ilgili alanda çalışan hekimimiz tarafından planlanır ve yürütülür."
+            />
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {publicDoctors.map((d) => (
+                <div key={d.slug} className="reveal">
+                  <DoctorCard {...d} />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ---------------- Galeri ---------------- */}
-      <section className="section">
-        <div className="container-x">
-          <SectionHeading
-            eyebrow="Galeri"
-            title="Kliniğimizden kareler"
-            description="Bekleme alanı, muayene odaları ve sterilizasyon ünitemizden fotoğraflar."
-          />
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { label: "Bekleme alanı", icon: "users" as const },
-              { label: "Ünit ve muayene odası", icon: "tooth" as const },
-              { label: "Sterilizasyon ünitesi", icon: "sterile" as const },
-              { label: "Röntgen odası", icon: "xray" as const },
-              { label: "Çocuk köşesi", icon: "child" as const },
-              { label: "Klinik dış cephe", icon: "pin" as const },
-            ].map((item, index) => (
-              <SitePhoto
-                key={item.label}
-                photo={stripPhotos[index]}
-                label={item.label}
-                hint="Önerilen: 1200×900 px"
-                icon={item.icon}
-                className="aspect-4/3"
-              />
-            ))}
+      {stripPhotos.some(Boolean) ? (
+        <section className="section">
+          <div className="container-x">
+            <SectionHeading
+              eyebrow="Galeri"
+              title="Kliniğimizden kareler"
+              description="Bekleme alanı, muayene odaları ve sterilizasyon ünitemizden fotoğraflar."
+            />
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {stripPhotos.filter(Boolean).map((photo) => (
+                <SitePhoto key={photo!.id} photo={photo} className="aspect-4/3" />
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link href="/galeri" className="btn btn-outline">
+                Galerinin tamamı
+                <Icon name="arrowRight" className="size-4" />
+              </Link>
+            </div>
           </div>
-          <div className="mt-10 text-center">
-            <Link href="/galeri" className="btn btn-outline">
-              Galerinin tamamı
-              <Icon name="arrowRight" className="size-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ---------------- Yorumlar ---------------- */}
+      {publicTestimonials.length > 0 ? (
       <section className="section bg-brand-800">
-        <div className="container-x">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow text-aqua-300">Hasta deneyimleri</p>
-            <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
-              Hastalarımız ne söylüyor?
-            </h2>
+          <div className="container-x">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="eyebrow text-aqua-300">Hasta deneyimleri</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
+                Hastalarımız ne söylüyor?
+              </h2>
+            </div>
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+              {publicTestimonials.map((t, index) => (
+                <figure
+                  key={index}
+                  className="reveal rounded-xl2 bg-brand-700/60 p-6 ring-1 ring-brand-600 ring-inset"
+                >
+                  <div className="flex gap-0.5 text-aqua-300" aria-label="5 üzerinden 5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Icon key={i} name="star" fill="currentColor" className="size-4" />
+                    ))}
+                  </div>
+                  <blockquote className="mt-4 text-sm leading-relaxed text-brand-100">
+                    “{t.text}”
+                  </blockquote>
+                  <figcaption className="mt-5 text-xs text-brand-300">
+                    <span className="font-bold text-white">{t.name}</span> ·{" "}
+                    {t.city} · {t.treatment}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {testimonials.map((t, index) => (
-              <figure
-                key={index}
-                className="reveal rounded-xl2 bg-brand-700/60 p-6 ring-1 ring-brand-600 ring-inset"
-              >
-                <div className="flex gap-0.5 text-aqua-300" aria-label="5 üzerinden 5">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Icon key={i} name="star" fill="currentColor" className="size-4" />
-                  ))}
-                </div>
-                <blockquote className="mt-4 text-sm leading-relaxed text-brand-100">
-                  “{t.text}”
-                </blockquote>
-                <figcaption className="mt-5 text-xs text-brand-300">
-                  <span className="font-bold text-white">{t.name}</span> ·{" "}
-                  {t.city} · {t.treatment}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <p className="mx-auto mt-8 max-w-2xl text-center text-[0.7rem] leading-relaxed text-brand-400">
-            Taslak notu: Yukarıdaki yorumlar örnek metinlerdir. Yayına almadan
-            önce hastalardan yazılı izin alınarak gerçek yorumlarla
-            değiştirilmeli ya da bu bölüm kaldırılmalıdır.
-          </p>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ---------------- Randevu + SSS ---------------- */}
       <section className="section">

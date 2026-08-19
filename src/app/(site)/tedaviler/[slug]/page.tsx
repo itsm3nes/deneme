@@ -6,7 +6,6 @@ import { Icon } from "@/components/site/Icons";
 import {
   Breadcrumbs,
   FaqItem,
-  PhotoSlot,
   TreatmentCard,
 } from "@/components/site/ui";
 import { clinic, whatsappLink } from "@/lib/clinic";
@@ -103,12 +102,6 @@ export default async function TreatmentPage({
               {treatment.intro}
             </p>
 
-            <PhotoSlot
-              label={`${treatment.short} — tedavi görseli`}
-              hint="Önerilen: 1200×675 px · hasta izni alınmış klinik fotoğrafı"
-              icon={treatment.icon}
-              className="mt-8 aspect-video"
-            />
 
             <h2 className="mt-12 text-2xl font-extrabold">
               Kimler için uygundur?

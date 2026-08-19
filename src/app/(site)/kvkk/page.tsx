@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DraftNote, PageHero } from "@/components/site/ui";
+import { PageHero } from "@/components/site/ui";
 import { clinic } from "@/lib/clinic";
 
 export const metadata: Metadata = {
@@ -76,13 +76,6 @@ export default function KvkkPage() {
 
       <section className="section">
         <div className="container-x max-w-3xl">
-          <DraftNote>
-            Bu metin taslak bir örnektir ve hukuki danışmanlık teşkil etmez.
-            Yayına almadan önce kliniğin gerçek veri işleme süreçlerine göre bir
-            hukukçu tarafından gözden geçirilmelidir. VERBİS kayıt yükümlülüğünüz
-            olup olmadığını da kontrol ettirin.
-          </DraftNote>
-
           {sections.map((section) => (
             <div key={section.title} className="mt-10">
               <h2 className="text-xl font-extrabold">{section.title}</h2>

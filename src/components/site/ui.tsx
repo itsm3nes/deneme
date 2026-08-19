@@ -38,56 +38,22 @@ export function SectionHeading({
 }
 
 /**
- * Fotoğraf yer tutucusu.
- * ⚠️ TASLAK: Klinik fotoğrafları elinize geçtiğinde bu bileşeni
- * `next/image` ile değiştirin. `label` metni önerilen içeriği anlatır.
- */
-export function PhotoSlot({
-  label,
-  hint,
-  className = "",
-  icon = "tooth",
-}: {
-  label: string;
-  hint?: string;
-  className?: string;
-  icon?: IconName;
-}) {
-  return (
-    <div
-      className={`flex flex-col items-center justify-center gap-2 rounded-xl2 border-2 border-dashed border-aqua-200 bg-aqua-50/60 p-6 text-center ${className}`}
-    >
-      <Icon name={icon} className="size-8 text-aqua-400" />
-      <p className="text-sm font-semibold text-brand-700">{label}</p>
-      {hint ? <p className="text-xs text-ink-400">{hint}</p> : null}
-    </div>
-  );
-}
-
-/**
- * Yüklenmiş fotoğrafı gösterir; henüz yüklenmemişse yerine kesikli çerçeveli
- * yer tutucu koyar. Böylece galeri boşken de sayfa düzeni bozulmaz.
+ * Yüklenmiş fotoğrafı gösterir. Fotoğraf yoksa hiçbir şey çizmez — ziyaretçi
+ * boş çerçeve ya da "buraya fotoğraf gelecek" türü bir iz görmez. Hangi
+ * alanların boş olduğunu yönetim paneli söyler.
  */
 export function SitePhoto({
   photo,
-  label,
-  hint,
-  icon = "tooth",
   className = "",
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
   priority = false,
 }: {
   photo: Photo | null | undefined;
-  label: string;
-  hint?: string;
-  icon?: IconName;
   className?: string;
   sizes?: string;
   priority?: boolean;
 }) {
-  if (!photo) {
-    return <PhotoSlot label={label} hint={hint} icon={icon} className={className} />;
-  }
+  if (!photo) return null;
 
   return (
     <div className={`relative overflow-hidden rounded-xl2 bg-ink-100 ${className}`}>
@@ -289,14 +255,12 @@ export function DoctorCard({
   field,
   bio,
   interests,
-  placeholder,
 }: {
   name: string;
   title: string;
   field: string;
   bio: string;
   interests: string[];
-  placeholder?: boolean;
 }) {
   return (
     <article className="card card-hover overflow-hidden">
@@ -318,12 +282,6 @@ export function DoctorCard({
             </li>
           ))}
         </ul>
-        {placeholder ? (
-          <p className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-[0.7rem] leading-relaxed text-amber-800">
-            Yer tutucu kart — hekim adı, fotoğrafı ve özgeçmişi klinikten
-            alınarak doldurulacak.
-          </p>
-        ) : null}
       </div>
     </article>
   );
@@ -373,11 +331,3 @@ export function formatDate(iso: string) {
   }).format(new Date(iso));
 }
 
-/** Klinik künyesinde doğrulanmamış alanlar için görünür uyarı (yalnızca taslakta). */
-export function DraftNote({ children }: { children: ReactNode }) {
-  return (
-    <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800 ring-1 ring-amber-200 ring-inset">
-      <strong className="font-bold">Taslak notu:</strong> {children}
-    </p>
-  );
-}
