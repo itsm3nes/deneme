@@ -111,21 +111,27 @@ sürümüne hiç dâhil edilmez.
 
 Bundan sonra bu dala her push'ta site kendiliğinden yeniden yayınlanır.
 
-### Domain bağlama
+### Domain bağlama — mevadisyalova.com
 
-1. Domaini kayıtçınızdan (Natro, İsimtescil, Cloudflare, Namecheap…) alın.
-2. Vercel → **Project Settings → Domains → Add** → alan adınızı yazın.
-3. Vercel'in verdiği kayıtları kayıtçının DNS panelinde tanımlayın:
+Birincil adres **`https://mevadisyalova.com`** (www'suz) olarak planlandı;
+`www.mevadisyalova.com` buraya yönlendirilir.
+
+1. Vercel → **Project Settings → Domains → Add** → `mevadisyalova.com` ekleyin,
+   ardından `www.mevadisyalova.com` ekleyip **Redirect to mevadisyalova.com**
+   seçeneğini işaretleyin.
+2. Vercel'in gösterdiği kayıtları domain kayıtçınızın DNS panelinde tanımlayın:
 
    | Kayıt | Ad | Değer |
    | --- | --- | --- |
    | `A` | `@` | `76.76.21.21` |
    | `CNAME` | `www` | `cname.vercel-dns.com` |
 
-   (Vercel ekranda güncel değerleri gösterir; oradakini esas alın.)
-4. Yayılma genelde 10–60 dakika sürer. Vercel sertifikayı (HTTPS) kendisi alır.
-5. Vercel → Domains ekranında `www` ve köksüz adresten hangisinin **birincil**
-   olacağını seçin; diğeri otomatik yönlendirilir.
+   Vercel ekranda güncel değerleri gösterir; **oradakini esas alın** — bu tablo
+   yalnızca örnektir. Kayıtçı "TTL" sorarsa varsayılanı bırakın.
+3. Yayılma genelde 10–60 dakika sürer (bazen birkaç saat). Vercel HTTPS
+   sertifikasını kendisi alır; ek işlem gerekmez.
+4. Kayıtçınızda önceden tanımlı `A` / `CNAME` park kayıtları varsa silin —
+   yoksa doğrulama takılır.
 
 ### Yayına geçerken zorunlu ayar
 
@@ -136,8 +142,11 @@ içerik arama sonuçlarına düşmesin diye.
 Domain bağlandıktan sonra Vercel'de tanımlayın ve yeniden yayınlayın:
 
 ```
-NEXT_PUBLIC_SITE_URL = https://www.alan-adiniz.com
+NEXT_PUBLIC_SITE_URL = https://mevadisyalova.com
 ```
+
+Değer, sitenin gerçekten servis edildiği adresle **birebir** aynı olmalı
+(www'lu/www'suz farkı dâhil); aksi hâlde canonical adresler yanlış çıkar.
 
 Bu değişken canonical, Open Graph ve sitemap adreslerini de düzeltir.
 
@@ -163,8 +172,12 @@ Aşağıdakiler tamamlanmadan site hastalara açılmamalı. İlk dördü **panel
 - [ ] **Anlaşmalı kurumlar** — yalnızca basına yansıyan YTSO protokolü var.
 - [ ] **`NEXT_PUBLIC_SITE_URL`** — tanımlanmadan site aramaya kapalı kalır.
 - [ ] **Eski site** — klinik `mevadis.com.tr` adresini kullanıyor. İki site aynı
-      anda yayında kalırsa arama motorları içeriği bölüşür; eskisini yeni adrese
-      301 ile yönlendirmek en temizi.
+      anda yayında kalırsa arama motorları içeriği bölüşür; eskisini
+      `mevadisyalova.com` adresine 301 ile yönlendirmek en temizi.
+- [ ] **Google Business Profile** — kliniğin harita kaydındaki web sitesi
+      alanını yeni adresle güncelleyin; yerel aramada en çok işe yarayan adım bu.
+- [ ] **Search Console** — domaini [search.google.com/search-console](https://search.google.com/search-console)
+      üzerinde doğrulayıp `sitemap.xml` adresini gönderin (yayına aldıktan sonra).
 
 ### Doğrulanmış bilgiler
 
