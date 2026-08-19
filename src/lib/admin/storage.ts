@@ -92,10 +92,27 @@ async function putToGitHub(
   });
 
   if (!response.ok) {
-    console.error("GitHub kayıt hatası:", response.status, await response.text());
+    const detail = await response.text();
+    console.error("GitHub kayıt hatası:", response.status, detail);
+
+    // GitHub'ın kendi açıklaması teşhisi kolaylaştırır ("Resource not
+    // accessible by personal access token" gibi), mesaja ekliyoruz.
+    let reason = "";
+    try {
+      const parsed = JSON.parse(detail) as { message?: string };
+      if (parsed.message) reason = ` GitHub: “${parsed.message}”`;
+    } catch {
+      /* gövde JSON değilse boş geç */
+    }
+
+    const hint =
+      response.status === 403 || response.status === 404
+        ? ' Token ayarlarında "Repository access" bu depoyu içermeli ve "Repository permissions → Contents" değeri "Read and write" olmalı. Ayarı değiştirdikten sonra Vercel\'de yeniden yayınlayın.'
+        : "";
+
     return {
       ok: false,
-      message: `GitHub'a yazılamadı (${response.status}). Token'ın bu depoda "Contents: Read and write" iznine sahip olduğundan emin olun.`,
+      message: `GitHub'a yazılamadı (${response.status}).${reason}${hint}`,
     };
   }
 
