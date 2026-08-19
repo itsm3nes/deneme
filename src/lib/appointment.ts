@@ -6,13 +6,10 @@
  * aynı şekilde çalışır ve hiçbir talep sunucuda kaybolmaz.
  */
 
-import { treatments } from "./treatments";
-
 export type AppointmentField =
   | "adSoyad"
   | "telefon"
   | "eposta"
-  | "tedavi"
   | "tarih"
   | "saat"
   | "mesaj"
@@ -48,7 +45,6 @@ export function validateAppointment(formData: FormData): ValidationResult {
     adSoyad: get("adSoyad"),
     telefon: get("telefon"),
     eposta: get("eposta"),
-    tedavi: get("tedavi"),
     tarih: get("tarih"),
     saat: get("saat"),
     mesaj: get("mesaj"),
@@ -67,10 +63,6 @@ export function validateAppointment(formData: FormData): ValidationResult {
 
   if (values.eposta && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.eposta)) {
     errors.eposta = "E-posta adresi geçerli görünmüyor.";
-  }
-
-  if (values.tedavi && !treatments.some((t) => t.slug === values.tedavi)) {
-    errors.tedavi = "Listeden bir tedavi seçin.";
   }
 
   if (values.tarih) {
@@ -98,11 +90,10 @@ export function formatAppointmentMessage(
   values: AppointmentValues,
   phone: string,
 ) {
-  const treatment = treatments.find((t) => t.slug === values.tedavi);
   const saatler: Record<string, string> = {
     sabah: "Sabah (09:00 – 12:00)",
-    "ogleden-sonra": "Öğleden sonra (12:00 – 16:00)",
-    aksam: "Akşamüstü (16:00 – 19:00)",
+    "ogleden-sonra": "Öğleden sonra (12:00 – 17:00)",
+    aksam: "Akşam (17:00 – 21:00)",
   };
 
   return [
@@ -111,7 +102,6 @@ export function formatAppointmentMessage(
     `Ad Soyad: ${values.adSoyad}`,
     `Telefon: 0${phone}`,
     values.eposta ? `E-posta: ${values.eposta}` : null,
-    treatment ? `Tedavi: ${treatment.title}` : null,
     values.tarih ? `Tercih edilen gün: ${values.tarih}` : null,
     values.saat ? `Tercih edilen saat: ${saatler[values.saat] ?? values.saat}` : null,
     values.mesaj ? `Not: ${values.mesaj}` : null,

@@ -8,7 +8,6 @@ import {
   type AppointmentField,
 } from "@/lib/appointment";
 import { clinic, whatsappLink } from "@/lib/clinic";
-import { treatments } from "@/lib/treatments";
 import { Icon } from "./Icons";
 
 /**
@@ -33,10 +32,11 @@ function FieldError({ children }: { children?: string }) {
 
 export function AppointmentForm({
   variant = "full",
-  defaultTreatment,
+  defaultNote,
 }: {
   variant?: "full" | "compact";
-  defaultTreatment?: string;
+  /** Tedavi sayfalarından gelindiğinde açıklama alanına önyazı düşer. */
+  defaultNote?: string;
 }) {
   const [errors, setErrors] = useState<Errors>({});
   const [sentUrl, setSentUrl] = useState<string | null>(null);
@@ -140,46 +140,23 @@ export function AppointmentForm({
         </div>
       </div>
 
-      <div className={variant === "compact" ? "" : "grid gap-4 sm:grid-cols-2"}>
+      {variant === "full" ? (
         <div>
-          <label className="label" htmlFor="tedavi">
-            İlgilendiğiniz tedavi
+          <label className="label" htmlFor="eposta">
+            E-posta
           </label>
-          <select
-            id="tedavi"
-            name="tedavi"
+          <input
+            id="eposta"
+            name="eposta"
+            type="email"
             className="field"
-            defaultValue={defaultTreatment ?? ""}
-            aria-invalid={Boolean(errors.tedavi)}
-          >
-            <option value="">Seçiniz (isteğe bağlı)</option>
-            {treatments.map((t) => (
-              <option key={t.slug} value={t.slug}>
-                {t.title}
-              </option>
-            ))}
-          </select>
-          <FieldError>{errors.tedavi}</FieldError>
+            autoComplete="email"
+            aria-invalid={Boolean(errors.eposta)}
+            placeholder="ornek@eposta.com"
+          />
+          <FieldError>{errors.eposta}</FieldError>
         </div>
-
-        {variant === "full" ? (
-          <div>
-            <label className="label" htmlFor="eposta">
-              E-posta
-            </label>
-            <input
-              id="eposta"
-              name="eposta"
-              type="email"
-              className="field"
-              autoComplete="email"
-              aria-invalid={Boolean(errors.eposta)}
-              placeholder="ornek@eposta.com"
-            />
-            <FieldError>{errors.eposta}</FieldError>
-          </div>
-        ) : null}
-      </div>
+      ) : null}
 
       {variant === "full" ? (
         <>
@@ -204,28 +181,45 @@ export function AppointmentForm({
               <select id="saat" name="saat" className="field" defaultValue="">
                 <option value="">Fark etmez</option>
                 <option value="sabah">Sabah (09:00 – 12:00)</option>
-                <option value="ogleden-sonra">Öğleden sonra (12:00 – 16:00)</option>
-                <option value="aksam">Akşamüstü (16:00 – 19:00)</option>
+                <option value="ogleden-sonra">Öğleden sonra (12:00 – 17:00)</option>
+                <option value="aksam">Akşam (17:00 – 21:00)</option>
               </select>
             </div>
           </div>
 
           <div>
             <label className="label" htmlFor="mesaj">
-              Şikâyetiniz ya da eklemek istedikleriniz
+              Şikâyetiniz ya da ilgilendiğiniz tedavi
             </label>
             <textarea
               id="mesaj"
               name="mesaj"
               rows={4}
               className="field resize-y"
+              defaultValue={defaultNote}
               aria-invalid={Boolean(errors.mesaj)}
-              placeholder="Örn. sağ alt azı dişimde sıcak-soğuk hassasiyeti var."
+              placeholder="Örn. sağ alt azı dişimde sıcak-soğuk hassasiyeti var. / İmplant hakkında bilgi almak istiyorum."
             />
             <FieldError>{errors.mesaj}</FieldError>
           </div>
         </>
-      ) : null}
+      ) : (
+        <div>
+          <label className="label" htmlFor="mesaj-kisa">
+            Şikâyetiniz ya da ilgilendiğiniz tedavi
+          </label>
+          <textarea
+            id="mesaj-kisa"
+            name="mesaj"
+            rows={3}
+            className="field resize-y"
+            defaultValue={defaultNote}
+            aria-invalid={Boolean(errors.mesaj)}
+            placeholder="Kısaca yazabilirsiniz."
+          />
+          <FieldError>{errors.mesaj}</FieldError>
+        </div>
+      )}
 
       <div>
         <label className="flex items-start gap-3 text-sm text-ink-600">

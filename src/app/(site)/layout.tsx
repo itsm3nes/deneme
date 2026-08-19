@@ -10,6 +10,16 @@ import { clinic } from "@/lib/clinic";
  * alt bilgisini ve WhatsApp düğmesini almaz.
  */
 
+const SCHEMA_DAYS: Record<string, string> = {
+  Pazartesi: "Monday",
+  Salı: "Tuesday",
+  Çarşamba: "Wednesday",
+  Perşembe: "Thursday",
+  Cuma: "Friday",
+  Cumartesi: "Saturday",
+  Pazar: "Sunday",
+};
+
 /** Google için yapılandırılmış veri (yerel işletme / diş kliniği). */
 const jsonLd = {
   "@context": "https://schema.org",
@@ -36,7 +46,8 @@ const jsonLd = {
     .filter((day) => day.open)
     .map((day) => ({
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: day.day,
+      // schema.org İngilizce gün adı bekler; künyedeki Türkçe ad çevrilir.
+      dayOfWeek: SCHEMA_DAYS[day.day] ?? day.day,
       opens: day.open,
       closes: day.close,
     })),

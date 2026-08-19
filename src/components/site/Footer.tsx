@@ -137,11 +137,7 @@ export function Footer() {
             </li>
             <li className="flex gap-3">
               <Icon name="clock" className="mt-0.5 size-4.5 shrink-0 text-aqua-400" />
-              <span className="text-brand-300">
-                {clinic.hours.summary}
-                <br />
-                Pazar kapalı
-              </span>
+              <span className="text-brand-300">{clinic.hours.summary}</span>
             </li>
           </ul>
         </div>

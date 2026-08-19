@@ -229,7 +229,10 @@ export default async function TreatmentPage({
               Formu doldurun, çalışma saatleri içinde sizi arayalım.
             </p>
             <div className="mt-6">
-              <AppointmentForm variant="compact" defaultTreatment={treatment.slug} />
+              <AppointmentForm
+                variant="compact"
+                defaultNote={`${treatment.title} hakkında bilgi almak istiyorum.`}
+              />
             </div>
           </div>
         </div>

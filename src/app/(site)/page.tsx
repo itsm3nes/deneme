@@ -59,6 +59,10 @@ const steps = [
 
 export default function HomePage() {
   const homeFaqs = faqs.slice(0, 6);
+  // Saatler künyeden okunur; panelden değiştirilince burası da güncellenir.
+  const weekday = clinic.hours.weekly[0];
+  const weekdayHours = `${weekday.open} – ${weekday.close}`;
+  const openDays = clinic.hours.weekly.filter((day) => day.open).length;
 
   return (
     <>
@@ -94,7 +98,11 @@ export default function HomePage() {
             <dl className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-ink-200 pt-6">
               {[
                 { icon: "tooth" as const, value: "16", label: "tedavi başlığı" },
-                { icon: "clock" as const, value: "6 gün", label: "haftalık hizmet" },
+                {
+                  icon: "clock" as const,
+                  value: `${openDays} gün`,
+                  label: "haftalık hizmet",
+                },
                 { icon: "shield" as const, value: "Steril", label: "her randevuda" },
               ].map((item) => (
                 <div key={item.label}>
@@ -127,8 +135,8 @@ export default function HomePage() {
                   <Icon name="clock" className="size-4.5" />
                 </span>
                 <div className="text-xs">
-                  <p className="font-bold text-brand-800">Hafta içi</p>
-                  <p className="text-ink-500">09:00 – 19:00</p>
+                  <p className="font-bold text-brand-800">Pzt – Cmt</p>
+                  <p className="text-ink-500">{weekdayHours}</p>
                 </div>
               </div>
 
@@ -171,7 +179,7 @@ export default function HomePage() {
             {
               icon: "phone" as const,
               title: "Telefon",
-              lines: [clinic.phone.display, "Hafta içi 09:00 – 19:00"],
+              lines: [clinic.phone.display, `Pzt–Cmt ${weekdayHours}`],
               href: clinic.phone.href,
               cta: "Hemen ara",
               external: false,

@@ -66,7 +66,7 @@ export function ClinicEditor({ initial }: { initial: Clinic }) {
       i === index
         ? closed
           ? { ...day, open: null, close: null }
-          : { ...day, open: "09:00", close: "19:00" }
+          : { ...day, open: "09:00", close: "21:00" }
         : day,
     );
     set("hours.weekly", weekly);

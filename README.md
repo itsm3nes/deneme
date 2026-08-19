@@ -152,15 +152,13 @@ Bu değişken canonical, Open Graph ve sitemap adreslerini de düzeltir.
 
 ## Yayın kontrol listesi
 
-Aşağıdakiler tamamlanmadan site hastalara açılmamalı. İlk dördü **panelden**
+Aşağıdakiler tamamlanmadan site hastalara açılmamalı. İlk üçü **panelden**
 (`/yonetim`) yapılır.
 
 - [ ] **Hekim kadrosu** — 4 kart hâlâ "Dt. Ad Soyad". Gerçek ad, unvan, uzmanlık
       ve özgeçmişleri girin; girdikten sonra "Yer tutucu kart" kutusunun işaretini kaldırın.
 - [ ] **Hasta yorumları** — örnek metinler. Gerçek yorumlarla değiştirin (hastadan
       yazılı izin gerekir) ya da kayıtları silin.
-- [ ] **Çalışma saatleri** — hafta içi 09:00–19:00 / Cumartesi 09:00–17:00 varsayıldı.
-      Teyit edip "Saatler klinikten teyit edildi" kutusunu işaretleyin.
 - [ ] **WhatsApp numarası** — şu an sabit hat. Gerçek WhatsApp hattını girin
       (form talepleri buraya gidiyor, bu madde kritik).
 - [ ] **Harita konumu** — `content/clinic.json` içindeki enlem/boylam yaklaşıktır.
