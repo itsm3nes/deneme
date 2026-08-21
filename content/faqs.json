@@ -1,0 +1,57 @@
+[
+  {
+    "group": "Randevu ve Ziyaret",
+    "q": "Randevu nasıl alabilirim?",
+    "a": "Telefonla, WhatsApp üzerinden ya da sitedeki randevu formunu doldurarak talep oluşturabilirsiniz. Form talepleri çalışma saatleri içinde geri aranarak kesinleştirilir."
+  },
+  {
+    "group": "Randevu ve Ziyaret",
+    "q": "İlk muayeneye gelirken ne getirmeliyim?",
+    "a": "Kimliğinizi, varsa daha önce çekilmiş röntgenlerinizi ve düzenli kullandığınız ilaçların listesini getirmeniz süreci hızlandırır."
+  },
+  {
+    "group": "Randevu ve Ziyaret",
+    "q": "Randevuma yetişemezsem ne yapmalıyım?",
+    "a": "Mümkünse en az bir gün önceden bizi arayın. Böylece randevunuzu erteleyebilir, boşalan saati bekleyen başka bir hastaya verebiliriz."
+  },
+  {
+    "group": "Tedavi Süreci",
+    "q": "Diş hekimi korkum var, ne yapabilirim?",
+    "a": "Dental fobi sık görülür ve konuşularak yönetilebilir. Randevunuzun başında hekiminize bunu söyleyin; işlem adım adım anlatılır, gerektiğinde daha kısa seanslar planlanır."
+  },
+  {
+    "group": "Tedavi Süreci",
+    "q": "Tedavi kaç seans sürer?",
+    "a": "Dolgu gibi işlemler tek seansta biterken, implant ve ortodonti aylara yayılır. Muayene sonrası size seans sayısını ve takvimi içeren bir plan sunulur."
+  },
+  {
+    "group": "Tedavi Süreci",
+    "q": "Hamileyken diş tedavisi olabilir miyim?",
+    "a": "Olabilirsiniz. En uygun dönem 2. trimestırdır (4–6. aylar). Acil olmayan cerrahi işlemler doğum sonrasına bırakılır. Hamileliğinizi mutlaka hekiminize bildirin."
+  },
+  {
+    "group": "Tedavi Süreci",
+    "q": "Sterilizasyon nasıl sağlanıyor?",
+    "a": "Kullanılan aletler ön yıkama ve ultrasonik temizlikten sonra otoklavda steril edilir; tek kullanımlık malzemeler her hasta için yenilenir. Ünit yüzeyleri her randevu arasında dezenfekte edilir."
+  },
+  {
+    "group": "Ödeme ve Kurumlar",
+    "q": "Fiyat bilgisi alabilir miyim?",
+    "a": "Ağız ve diş sağlığı hizmetlerinde fiyat, ancak muayene sonrası kişiye özel tedavi planı çıkarıldığında verilebilir. Sağlık Bakanlığı mevzuatı gereği internet üzerinden fiyat listesi paylaşılamaz; muayene sonrası ayrıntılı bilgi verilir."
+  },
+  {
+    "group": "Ödeme ve Kurumlar",
+    "q": "Anlaşmalı kurum indirimlerinden nasıl yararlanırım?",
+    "a": "Anlaşmalı kurum çalışanı olduğunuzu randevu sırasında belirtmeniz ve kurum kimliğinizi yanınızda getirmeniz yeterlidir."
+  },
+  {
+    "group": "Bakım",
+    "q": "Ne sıklıkla kontrole gelmeliyim?",
+    "a": "Şikâyetiniz olmasa bile 6 ayda bir kontrol öneriyoruz. Erken fark edilen çürük ve diş eti sorunları çok daha kısa ve konforlu tedavilerle çözülür."
+  },
+  {
+    "group": "Bakım",
+    "q": "Diş fırçalamak yeterli mi?",
+    "a": "Fırça, diş yüzeylerinin yaklaşık üçte ikisine ulaşır. Diş ipi ya da ara yüz fırçası kullanmadan diş aralarındaki plak temizlenemez; günde bir kez ara yüz temizliği önerilir."
+  }
+]

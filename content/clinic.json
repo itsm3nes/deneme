@@ -1,0 +1,78 @@
+{
+  "name": "Meva Ağız ve Diş Sağlığı Polikliniği",
+  "shortName": "Meva Diş",
+  "tagline": "Yalova'da modern ağız ve diş sağlığı",
+  "legalName": "Meva Ağız ve Diş Sağlığı Polikliniği",
+  "phone": {
+    "display": "0226 813 33 77",
+    "href": "tel:+902268133377",
+    "intl": "+902268133377"
+  },
+  "whatsapp": {
+    "number": "902268133377",
+    "verified": true
+  },
+  "email": "mevadisklinikleri@gmail.com",
+  "address": {
+    "street": "Bayraktepe Mah. Şehit Ömer Faydalı Cad. No: 77/A",
+    "district": "Merkez",
+    "city": "Yalova",
+    "postalCode": "77100",
+    "country": "TR",
+    "full": "Bayraktepe Mah. Şehit Ömer Faydalı Cad. No: 77/A, Merkez / Yalova",
+    "geo": {
+      "lat": 40.6549,
+      "lng": 29.2769,
+      "verified": false
+    },
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Meva+A%C4%9F%C4%B1z+ve+Di%C5%9F+Sa%C4%9Fl%C4%B1%C4%9F%C4%B1+Poliklini%C4%9Fi+Yalova",
+    "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=Meva+A%C4%9F%C4%B1z+ve+Di%C5%9F+Sa%C4%9Fl%C4%B1%C4%9F%C4%B1+Poliklini%C4%9Fi+Yalova"
+  },
+  "hours": {
+    "verified": true,
+    "weekly": [
+      {
+        "day": "Pazartesi",
+        "open": "09:00",
+        "close": "21:00"
+      },
+      {
+        "day": "Salı",
+        "open": "09:00",
+        "close": "21:00"
+      },
+      {
+        "day": "Çarşamba",
+        "open": "09:00",
+        "close": "21:00"
+      },
+      {
+        "day": "Perşembe",
+        "open": "09:00",
+        "close": "21:00"
+      },
+      {
+        "day": "Cuma",
+        "open": "09:00",
+        "close": "21:00"
+      },
+      {
+        "day": "Cumartesi",
+        "open": "09:00",
+        "close": "21:00"
+      },
+      {
+        "day": "Pazar",
+        "open": "09:00",
+        "close": "17:00"
+      }
+    ],
+    "summary": "Her gün açığız · Pzt–Cmt 09:00 – 21:00 · Pazar 09:00 – 17:00",
+    "note": "Hafta sonu dâhil her gün hizmet veriyoruz. Pazar günleri 17:00'de kapanıyoruz."
+  },
+  "social": {
+    "instagram": "https://www.instagram.com/meva.dis/",
+    "facebook": "https://www.facebook.com/people/Meva-A%C4%9F%C4%B1z-Ve-Di%C5%9F-Sa%C4%9Fl%C4%B1%C4%9F%C4%B1-Poliklini%C4%9Fi/100088811685814/",
+    "website": "https://mevadisyalova.com"
+  }
+}

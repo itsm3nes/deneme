@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Örnek Hasta",
+    "city": "Yalova",
+    "treatment": "İmplant",
+    "text": "Tedavi öncesinde bütün aşamalar tek tek anlatıldı, ne olacağını bilerek başladım. Randevu saatlerine uyulması benim için en büyük fark oldu.",
+    "placeholder": true
+  },
+  {
+    "name": "Örnek Hasta",
+    "city": "Yalova",
+    "treatment": "Ortodonti",
+    "text": "Şeffaf plak tedavim boyunca kontroller aksatılmadı. Klinikteki ekip her sorumu sabırla yanıtladı.",
+    "placeholder": true
+  },
+  {
+    "name": "Örnek Hasta",
+    "city": "Çiftlikköy",
+    "treatment": "Çocuk diş hekimliği",
+    "text": "Çocuğum diş hekiminden çok korkuyordu. İlk randevuda hiçbir işlem yapılmadan sadece tanıştılar, ikinci randevuda tedaviyi ağlamadan tamamladık.",
+    "placeholder": true
+  }
+]

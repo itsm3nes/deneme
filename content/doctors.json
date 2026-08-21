@@ -1,0 +1,54 @@
+[
+  {
+    "slug": "hekim-1",
+    "name": "Dt. Ad Soyad",
+    "title": "Diş Hekimi",
+    "field": "Ağız, Diş ve Çene Cerrahisi",
+    "bio": "İmplant cerrahisi, gömülü diş çekimi ve kemik greftleme uygulamaları üzerine çalışıyor. Hastalarına tedavi öncesi süreci ayrıntılı anlatmayı önemsiyor.",
+    "interests": [
+      "İmplantoloji",
+      "Gömülü diş cerrahisi",
+      "Kemik greftleme"
+    ],
+    "placeholder": true
+  },
+  {
+    "slug": "hekim-2",
+    "name": "Dt. Ad Soyad",
+    "title": "Diş Hekimi",
+    "field": "Ortodonti",
+    "bio": "Çocuk ve yetişkin ortodontisi, şeffaf plak tedavileri ve erken dönem çene gelişimi takibiyle ilgileniyor.",
+    "interests": [
+      "Şeffaf plak",
+      "Sabit ortodonti",
+      "Erken dönem tedavi"
+    ],
+    "placeholder": true
+  },
+  {
+    "slug": "hekim-3",
+    "name": "Dt. Ad Soyad",
+    "title": "Diş Hekimi",
+    "field": "Restoratif Diş Tedavisi & Endodonti",
+    "bio": "Kanal tedavisi, estetik kompozit uygulamaları ve gülüş tasarımı vakalarını yürütüyor.",
+    "interests": [
+      "Kanal tedavisi",
+      "Estetik dolgu",
+      "Gülüş tasarımı"
+    ],
+    "placeholder": true
+  },
+  {
+    "slug": "hekim-4",
+    "name": "Dt. Ad Soyad",
+    "title": "Diş Hekimi",
+    "field": "Pedodonti",
+    "bio": "Çocuk hastalarda koruyucu diş hekimliği, davranış yönlendirme ve süt dişi tedavileri üzerine yoğunlaşıyor.",
+    "interests": [
+      "Koruyucu tedavi",
+      "Fissür örtücü",
+      "Çocuk hastaya yaklaşım"
+    ],
+    "placeholder": true
+  }
+]
